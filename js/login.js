@@ -1,10 +1,6 @@
-let mainNav = document.getElementById('js-menu');
 
-let navBarToggle = document.getElementById('js-navbar-toggle');
+function alertgo() {
 
+	alert("An e-mail has be sent with a link validation. Please check your e-mail");
+}
 
-navBarToggle.addEventListener('click', function () {
-    
-    mainNav.classList.toggle('active');
-	
-	});

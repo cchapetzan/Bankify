@@ -3,77 +3,78 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Login Bankify</title>
-	 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <script src="js/login.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"> 
+	<title>Login Bankify</title>
 	
 </head>
 <body>
-<nav class="navbar">
+<div>
+	<nav id="navbar">
+		<div>
+			<a href="index.html"><img src="images/bf_logo_test2.png" alt="logo_bankify" class="img-responsive"></a>
+		</div>
+			<ul class="main-nav" id="js-menu">
+				<li>
+					<a href="foryou.html" class="nav-links">For You</a>
+				</li>
+				<li>
+					<a href="positiveimpact.html" class="nav-links">Positive Impact</a>
+				</li>
+				<li>
+					<a href="aboutus.html" class="nav-links">About Us</a>
+				</li>
+				<li>
+					<a href="helpcenter.html" class="nav-links">Help Center</a>
+				</li>
+				<li>
+					<a href="contactus.html" class="nav-links">Contact Us</a>
+				</li>
+			</ul>
+	</nav>
 	<div>
-	<a href="./index.html"><img src="images/bf_logo_test2.png" alt="logo_bankify" class="img-responsive"></a>
+		<div id="container">
+			<div class="singin_container">
+				<div class="container__child signin__form">
+						<h1 class="heading--primary">Welcome to Bankify.</h1>
+							<h2 class="heading--secondary">Please sing in with your credentials</h2>
+						<div class="form-group">
+							<label for="username">Username</label>
+							<input class="form-control" type="text" name="username" id="username" placeholder="your full name" required /> <!-- remember to "clean the spots"-->
+						</div>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input class="form-control" type="text" name="email" id="email" placeholder="your@email.com" required />
+						</div>
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input class="form-control" type="password" name="password" id="password" placeholder="********" required />
+						</div>
+						<div class="form-group">
+							<label for="pac_number">PAC</label>
+							<input class="form-control" type="password" name="pac_number" id="pac_number" placeholder="********" required />
+						</div>
+						<div class="butonSubmit">
+							<ul class="list-inline">
+								<li>
+									<input class="btn btn--form" type="submit" value="Sign In" />
+								</li>
+								<li>
+									<a class="signin__link" href="#" onclick="alertgo()">I have lost my credentials</a>
+								</li>
+							</ul>
+						</div>
+					</form>  
+				</div>
+			</div>
+		</div>
 	</div>
-        <ul class="main-nav" id="js-menu">
-            <li>
-                <a href="#" class="nav-links">For You</a>
-            </li>
-            <li>
-                <a href="#" class="nav-links">Positive Impact</a>
-            </li>
-            <li>
-                <a href="#" class="nav-links">About Us</a>
-            </li>
-            <li>
-                <a href="#" class="nav-links">Help Center</a>
-            </li>
-            <li>
-                <a href="#" class="nav-links">Contact Us</a>
-            </li>
-        </ul>
-</nav>
-<div class="signin__container">
-  <div class="container__child signin__thumbnail">
-    <div class="thumbnail__logo">
-     
-      <h1 class="logo__text">Bankify</h1>
-    </div>
-    <div class="thumbnail__content text-center">
-      <h1 class="heading--primary">Welcome to Bankify.</h1>
-      <h2 class="heading--secondary">Please sing in with your credentials</h2>
-    </div>
-    <div class="signin__overlay"></div>
-  </div>
-  <div class="container__child signin__form">
-    <form action="#">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input class="form-control" type="text" name="username" id="username" placeholder="your full name" required />
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input class="form-control" type="text" name="email" id="email" placeholder="your@email.com" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input class="form-control" type="password" name="password" id="password" placeholder="********" required />
-      </div>
-      <div class="form-group">
-        <label for="pac_number">PAC</label>
-        <input class="form-control" type="password" name="pac_number" id="pac_number" placeholder="********" required />
-      </div>
-      <div class="m-t-lg">
-        <ul class="list-inline">
-          <li>
-            <input class="btn btn--form" type="submit" value="SignIn" />
-          </li>
-          <li>
-            <a class="signin__link" href="#">I have lost my credentials</a>
-          </li>
-        </ul>
-      </div>
-    </form>  
-  </div>
+</div>
+<div id="footer">
+	<p>Copyright &copy; 2021 - Bankify</p>
 </div>
 <body>
