@@ -8,12 +8,16 @@ $red-dark: #C06C84
     margin: 0;
 }
 
-body { /*do not touch*/
+html, body { /*do not touch*/
     font-family: 'Montserrat', sans-serif;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
-/*Turn it RESPONSIVE - MENU ALMOST DONE*/
-@media screen and (min-width: 768px) {    
+
+
 #navbar {
         display: flex;
         justify-content: space-between;
@@ -74,34 +78,115 @@ body { /*do not touch*/
     max-width: 250px;
 }
 /*Menu end*/
-/*NOT RESPONSIVE YET*/
-body {
-  font-family: 'Montserrat', sans-serif;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
+
 
 .hero{
 	position: relative;
-	display: flex;
+	display: grid;
 	width: 100vw;
 	height: 100vh;
 	justify-content: center;
 	align-items: center;
-	background: url("../images/bg_index_1.png");
+	width:100%;
+	overflow: hidden;
+	background: url("../images/hero_index_signup.jpg");
 }
 
 .hero::before{
 	content:"";
 	position: absolute;
+	display: block;
 	top: 0;
-	left:
+	left: 0;
 	width: 100%;
 	height: 100%;
+	z-index: -2;
+	opacity: 0.9;
 	background-repeat: no-repeat; 
 	background-size: cover;
 	background-position: center center;
+	filter: brightness(60%);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+
+.hero1{
+	position: relative;
+	display: grid;
+	width: 100vw;
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	width:100%;
+	overflow: hidden;
+	background: url("../images/hero_index_login.jpg");
+}
+
+.hero1::before{
+	content:"";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -2;
+	opacity: 0.9;
+	background-repeat: no-repeat; 
+	background-size: cover;
+	background-position: center center;
+	filter: brightness(60%);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+
+.hero2{
+	float: left;
+	width: 50vw;
+	height: 50vh;
+	justify-content: center;
+	align-items: center;
+	width:50%;
+	overflow: hidden;
+	background: url("../images/half_positive_impact_1.jpg");
+}
+
+.hero2::before{
+	content:"";
+	position: absolute;
+	top: 0;
+	left: 0;	
+	width: 100%;
+	height: 100%;
+	z-index: -2;
+	opacity: 0.9;
+	background-repeat: no-repeat; 
+	background-size: cover;
+	background-position: center center;
+	filter: brightness(60%);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+
+.hero3{
+	float: left;
+	width: 100vw;
+	height: 50vh;
+	justify-content: center;
+	align-items: center;
+	width:50%;
+	background: url("../images/half_positive_impact_1.jpg");
+}
+
+.hero3::before{
+	content:"";
+	position: absolute;
+	display: grid;
+	top: 0;
+	left: 0;	
+	background-repeat: no-repeat; 
 	filter: brightness(60%);
 }
 
@@ -122,39 +207,35 @@ body {
 	color: #fff;
 }
 
-.hero-button{
-	background-color: #0a0a0a;
-	color: white;
-	border: 1px solid #0a0a0a;
-	margin-top: 5rem;
-	padding: 0.9375rem1.875rem;
-	font-family: 'Montserrat', sans-serif;
-	font-size: 1.125rem;
-	font-weight: 300;
-	cursor: pointer;
-}
-
-.hero-button: hover{
-	background-color: #cb376a;
-	border: 1px solid #db7598;
-	
-
-#textmain{
-	text-align: center;
-	font-size: 1.6em;
-	letter-spacing: .2rem;
-	float: bottom;
+.btn-primary { 
+  padding: .5rem 2.5rem;
+  font-size: .95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+  background: #dd571c;
+  border-radius: remy(35px);
+  &:focus,
+  &:hover {background: lighten(#111, 13%);}
 }
 
 
-/*not working yet*/
+
 #footer p{
 	clear: both;
-	text-align: center; /*not working yet*/
+	text-align: center; 
 	background-color: transparent;
 	opacity: 1;
-	color: #fff;
+	color: #0a0a0a;
 	font-family: 'Montserrat', sans-serif;
 	padding-top: 15px; 
 	padding-bottom: 15px; 
+}
+
+@media screen and (min-width: 1500px) {
+  div#navbar, 
+  div#hero{ 
+    width: 100% !important; 
+    margin: auto;
+  }
 }
