@@ -14,33 +14,25 @@
 </head>
 <body>
 <div>
-	<nav id="navbar">
+	<div class="topnav" id="myTopnav">
 		<div>
 			<a href="index.html"><img src="images/bf_logo_test2.png" alt="logo_bankify" class="img-responsive"></a>
 		</div>
-			<ul class="main-nav" id="js-menu">
-				<li>
-					<a href="signUpNewAcc.html" class="nav-links">Open Your Account</a>
-				</li>
-				<li>
-					<a href="positiveImpact.html" class="nav-links">Positive Impact</a>
-				</li>
-				<li>
-					<a href="aboutUs.html" class="nav-links">About Us</a>
-				</li>
-				<li>
-					<a href="helpCenter.html" class="nav-links">Help Center</a>
-				</li>
-				<li>
-					<a href="contactUs.html" class="nav-links">Contact Us</a>
-				</li>
-			</ul>
-	</nav>
+			<a href="index.html">Home</a>
+			<a href="signUpNewAcc.html">Open Your Account</a>
+			<a href="login.html">Login to Your Account</a>
+			<a href="positiveImpact.html">Positive Impact</a>
+			<a href="aboutUs.html">About Us</a>
+			<a href="contactUs.html">Contact Us</a>
+			<a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+	</div>
 	<div>
-		<div id="container">
-			<div class="singin_container">
-				<div class="container__child signin__form">
-						<h1 class="heading--primary">Welcome to Bankify.</h1>
+		<div class="container">
+			<div class="img">
+				<div class="singin_container">
+					<div class="container__child signin__form">
+					<form>
+						<h1 class="heading--primary">Welcome to Bankify</h1>
 							<h2 class="heading--secondary">Please login with your credentials</h2>
 						<div class="form-group">
 							<label for="username">Username</label>
@@ -61,7 +53,7 @@
 						<div class="butonSubmit">
 							<ul class="list-inline">
 								<li>
-									<input class="btn btn--form" type="submit" value="Sign In" />
+									<input class="btn btn-primary" type="submit" value="Sign In" onclick="location.href=''" />
 								</li>
 								<li>
 									<a class="signin__link" href="#" onclick="alertgo()">I have lost my credentials</a>
@@ -69,6 +61,7 @@
 							</ul>
 						</div>
 					</form>  
+					</div>
 				</div>
 			</div>
 		</div>
@@ -77,4 +70,5 @@
 <div id="footer">
 	<p>Copyright &copy; 2021 - Bankify</p>
 </div>
-<body>
+</body>
+</html>

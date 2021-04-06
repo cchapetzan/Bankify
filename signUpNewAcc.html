@@ -9,75 +9,70 @@
 	<link rel="stylesheet" type="text/css" href="css/signUpNewAcc.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>Open Your Account</title>
 	
 </head>
 <body>
 <div>
-	<nav id="navbar">
+	<div class="topnav" id="myTopnav">
 		<div>
 			<a href="index.html"><img src="images/bf_logo_test2.png" alt="logo_bankify" class="img-responsive"></a>
 		</div>
-			<ul class="main-nav" id="js-menu">
-				<li>
-					<a href="login.html" class="nav-links">LogIn to your Account</a>
-				</li>
-				<li>
-					<a href="positiveImpact.html" class="nav-links">Positive Impact</a>
-				</li>
-				<li>
-					<a href="aboutUs.html" class="nav-links">About Us</a>
-				</li>
-				<li>
-					<a href="helpCenter.html" class="nav-links">Help Center</a>
-				</li>
-				<li>
-					<a href="contactUs.html" class="nav-links">Contact Us</a>
-				</li>
-			</ul>
-	</nav>
+			<a href="index.html">Home</a>
+			<a href="signUpNewAcc.html">Open Your Account</a>
+			<a href="login.html">Login to Your Account</a>
+			<a href="positiveImpact.html">Positive Impact</a>
+			<a href="aboutUs.html">About Us</a>
+			<a href="contactUs.html">Contact Us</a>
+			<a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+	</div>
 	<div>
-		<div id="container">
-			<div class="singin_container">
-				<div class="container__child signin__form">
-						<h1 class="heading--primary">Welcome to Bankify.</h1>
-							<h2 class="heading--secondary">Please sing up with for a new account.</h2>
-							<h2 class="heading--secondary">It will take less than a minute and it is super easy.</h2>
+		<div class="container">
+			<div class="img">
+				<div class="signup_container">
+					<div class="container_child signup_form">
+						<h1>Welcome to Bankify.</h1>
+							<h2>Please sing up with for a new account.</h2>
+							<h2>It will take less than a minute and it is super easy.</h2> <br> <br>
 						<form name="signUpForm" onsubmit="return formValid()" method="post">  
 							<label for="fistname">First Name:</label>         
 								<input type="text" name="firstname" size="50" placeholder="your first name" required> <br> <br>  
 							<label for="middlename">Middle Name:</label>     
-								<input type="text" name="middlename" size="50" placeholder="your middle name" required> <br> <br>  
+								<input type="text" name="middlename" size="" placeholder="your middle name" required> <br> <br>  
 							<label for="lastname">Last Name:</label>         
 								<input type="text" name="lastname" size="50" placeholder="your last name" required> <br> <br>  
 							<label for="idDocument">ID:</label>   
 								<input type="text" name="idDocument" size="50" placeholder="your ID" required> <br> <br> 
-							<label for="gender">Gender:</label><br>  
+							<label for="gender">Gender:</label>
 								<input type="text" name="gender" size="50" placeholder="your gender" required> <br> <br> 
 							<label for="phone">Phone:</label>  
 								<input type="text" name="country code"  value="+353" size="2"/>   
 								<input type="text" name="phone" size="25" placeholder="your phone number" required> <br> <br>  
-							<label for="address">Address:</label> <br>  
-								<textarea cols="80" rows="5" value="address" placeholder="your full address" required></textarea>  <br> <br>  
+							<label for="address">Address 1:</label> 
+								<input type="text" name="addrress1" size="50" placeholder="address line 1" required> <br> <br>
+							<label for="address">Address 2:</label>  
+								<input type="text" name="addrress2" size="50" placeholder="address line 2" required> <br> <br> 
+							<label for="address">Address 3:</label> 
+								<input type="text" name="addrress3" size="50" placeholder="address line 3" required> <br> <br>		
 							<label for="email">Email:</label>
-							<input type="email" id="email" name="email" placeholder="your e-mail address" required>	<br> <br>  
+								<input type="email" id="email" name="email" size="30" placeholder="your e-mail address" required>	<br> <br>  
 							<label for="password1">Choose Your Password:</label>
-							<input type="Password" id="pass" name="pass" size="25" placeholder="type your password" required> <br> <br>  
+								<input type="Password" id="pass" name="pass" size="25" placeholder="type your password" required> <br> <br>  
 							<label>Re-type password:</label> <!--ver como fazer pra ser igual a de cima-->
-							<input type="Password" id="repass" name="repass" size="25" placeholder="retype the same password" required> <br> <br>  
-						<form ... onsubmit="return checkForm(this);">
-							<p><input id="field_terms" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you accept the Terms and Conditions' : '');" type="checkbox" required name="terms"> I accept the <u>Terms and Conditions</u></p>
-						</form>	
-							
-						<div class="butonSubmit">
-							<ul class="list-inline">
-								<li>
-									<input class="btn btn--form" type="submit" value="Sign Up" />
-								</li>
-								
-							</ul>
-						</div>
-					</form>  
+								<input type="Password" id="repass" name="repass" size="25" placeholder="retype the same password" required> <br> <br>  
+							<form ... onsubmit="return checkForm(this);">
+								<p><input id="field_terms" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you accept the Terms and Conditions' : '');" type="checkbox" required name="terms"> I accept the <u>Terms and Conditions</u></p>
+							</form>	
+							<div class="butonSubmit">
+								<ul class="list-inline">
+									<li>
+										<input class="btn btn--form" type="submit" value="Sign Up" />
+									</li>
+								</ul>
+							</div>
+						</form>  
+					</div>
 				</div>
 			</div>
 		</div>
