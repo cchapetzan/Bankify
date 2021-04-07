@@ -12,6 +12,7 @@ html, body {
 	padding: 0;
 }
 
+
 .topnav {
     background-color: #e75e09;
     overflow: hidden;
@@ -52,36 +53,6 @@ html, body {
 }
 /*Menu end*/
 
-.hero{
-	position: relative;
-	display: grid;
-	width: 100vw;
-	height: 100vh;
-	width:100%;
-	overflow: hidden;
-}
-
-
-.img{
-	background: url("../images/hero_index_signup.jpg");
-	position: relative;
-	display: grid;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
-	justify-content: center;
-	align-items: center;
-	background-repeat: no-repeat; 
-	background-size: cover;
-	background-position: center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-}
-
-
 .hero1{
 	position: relative;
 	display: grid;
@@ -110,7 +81,7 @@ html, body {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 }
-
+@media screen and (min-width: 1500px) {
 .herotxt{
   text-align: center;
   position: relative; 
@@ -144,47 +115,26 @@ html, body {
 	font-weight: bold;
 	}
 
+.text h1{ 
+    font-size: 3.5625em;
+    margin-top: 0; 
+    margin-bottom: 0.5em;
+	padding-left: 1.5em;
+	color: #30502a;
+	font-family: 'Montserrat', sans-serif;
+	}
+
 .hero2{
-	position: relative;
-	display: grid;
-	width: 100vw;
-	height: 100vh;
-	width:100%;
+	float:left;
+	width: 47vw;
+	height: 70vh;
+	width:47%;
 	overflow: hidden;
 	
 }
 
 .img2{
-	background: url("../images/examples_fees_bankify.jpg");
-	position: relative;
-	display: grid;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 70%;
-	z-index: 1;
-	justify-content: center;
-	align-items: center;
-	background-repeat: no-repeat; 
-	background-size: cover;
-	background-position: center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-}
-
-.hero3{
-	position: relative;
-	display: grid;
-	width: 100vw;
-	height: 100vh;
-	width:100%;
-	overflow: hidden;
-	
-}
-
-.img3{
-	background: url("../images/examples_fees_bankify_1.jpg");
+	background: url("../images/resized_examples_fees_bankify.jpg");
 	position: relative;
 	display: grid;
 	top: 0;
@@ -196,25 +146,38 @@ html, body {
 	align-items: center;
 	background-repeat: no-repeat; 
 	background-size: cover;
-	background-position: center center;
+	background-position: top;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 }
-.btn-primary { 
-  padding: .5rem 2.5rem;
-  font-size: .95rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #fff;
-  background: #dd571c;
-  border-radius: remy(35px);
-  z-index: 4;
+
+.hero3{
+	float:left;
+	width: 53vw;
+	height: 90vh;
+	width: 53%;
+	overflow: hidden;
+	
 }
 
-.btn-primary:hover{
-	background: #30502a;
-	transition: 0.3s;
+.img3{
+	background: url("../images/resized_examples_fees_bankify_1.jpg");
+	position: relative;
+	display: grid;
+	top: 0;
+	left: 0;
+	width: 80%;
+	height: 66%;
+	z-index: 1;
+	justify-content: center;
+	align-items: center;
+	background-repeat: no-repeat; 
+	background-size: cover;
+	background-position: top;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
 }
 
 
@@ -237,7 +200,7 @@ html, body {
 	padding-bottom: 1em; 
 }
 
-@media screen and (min-width: 1500px) {
+
 .topnav, 
 .hero{ 
     width: 100% !important; 
@@ -245,7 +208,119 @@ html, body {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width:500px){
+	
+.herotxt h1{ 
+    font-size: 3.5625em !important;
+	text-align: center;
+    margin-top: 0; 
+    margin-bottom: 0.3em;
+	color: #fff;
+	}
+
+.herotxt h2{ 
+    font-size: 2.84375em !important;
+	text-align: center;
+    margin-top: 5em; 
+    margin-bottom: 0.3em;
+	color: #fff;
+	}
+
+.herotxt h3{ 
+    font-size: 1.75em !important;
+	text-align: center;
+    margin-top: 0; 
+    margin-bottom: 10em;
+	color: #fff;
+	}
+
+
+.text p{
+	padding: .5rem 2.5rem;
+	font-size: 1.3em;
+	color: #30502a;
+	text-align: left;
+	font-weight: bold;
+}
+
+.text h1{ 
+    font-size: 1.8625em;
+    margin-top: 0; 
+    margin-bottom: 0.5em;
+	padding-left: 1.5em;
+	color: #30502a;
+	font-family: 'Montserrat', sans-serif;
+	}
+	
+.hero2{
+	position: relative;
+	width: 83vw;
+	height: 55vh;
+	width: 100%;
+	overflow: hidden;
+	
+}
+
+.img2{
+	background: url("../images/resized_examples_fees_bankify.jpg");
+	position: relative;
+	display: grid;
+	top: 0;
+	left: -0.5em;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	justify-content: left;
+	align-items: center;
+	background-repeat: no-repeat; 
+	background-size: cover;
+	background-position: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+
+.hero3{
+	position: relative;
+	width: 80vw;
+	height: 60vh;
+	width: 100%;
+	overflow: hidden;
+	
+}
+
+.img3{
+	background: url("../images/resized_examples_fees_bankify_1.jpg");
+	position: relative;
+	display: grid;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	justify-content: center;
+	align-items: center;
+	background-repeat: no-repeat; 
+	background-size: cover;
+	background-position: top;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+
+#footer p{
+	clear: both;
+	text-align: center; 
+	background-color: transparent;
+	opacity: 1;
+	color: #30502a;
+	font-family: 'Montserrat', sans-serif;
+	padding-top: 1em; 
+	padding-bottom: 1em; 
+}
+
+
+@media screen and (max-width: 500px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
     float: right;
@@ -253,7 +328,7 @@ html, body {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive a.icon {
     position: absolute;
@@ -265,4 +340,5 @@ html, body {
     display: block;
     text-align: left;
   }
+}
 }
