@@ -37,9 +37,7 @@
 							<h2>It will take less than a minute and it is super easy.</h2> <br> <br>
 						<form name="signUpForm" onsubmit="return formValid()" method="post">  
 							<label for="fistname">First Name:</label>         
-								<input type="text" name="firstname" size="50" placeholder="your first name" required> <br> <br>  
-							<label for="middlename">Middle Name:</label>     
-								<input type="text" name="middlename" size="" placeholder="your middle name" required> <br> <br>  
+								<input type="text" name="firstname" size="50" placeholder="your first name" required> <br> <br>    
 							<label for="lastname">Last Name:</label>         
 								<input type="text" name="lastname" size="50" placeholder="your last name" required> <br> <br>  
 							<label for="idDocument">ID:</label>   
@@ -48,7 +46,7 @@
 								<input type="text" name="gender" size="50" placeholder="your gender" required> <br> <br> 
 							<label for="phone">Phone:</label>  
 								<input type="text" name="country code"  value="+353" size="2"/>   
-								<input type="text" name="phone" size="25" placeholder="your phone number" required> <br> <br>  
+								<input type="text" name="phone" size="25" pattern="[0-9]" inputmode="numeric" placeholder="your phone number" required> <br> <br>  
 							<label for="address">Address 1:</label> 
 								<input type="text" name="addrress1" size="50" placeholder="address line 1" required> <br> <br>
 							<label for="address">Address 2:</label>  
@@ -59,8 +57,13 @@
 								<input type="email" id="email" name="email" size="30" placeholder="your e-mail address" required>	<br> <br>  
 							<label for="password1">Choose Your Password:</label>
 								<input type="Password" id="pass" name="pass" size="25" placeholder="type your password" required> <br> <br>  
-							<label>Re-type password:</label> <!--ver como fazer pra ser igual a de cima-->
-								<input type="Password" id="repass" name="repass" size="25" placeholder="retype the same password" required> <br> <br>  
+							<label for="password1">Re-type password:</label> <!--must be equal. See how to do it-->
+								<input type="Password" id="repass" name="repass" size="25" placeholder="retype the same password" required> <br> <br>
+							<label for="pin1">Choose Your PIN:</label>
+								<input type="Password" name="pin" pattern="[0-9]{4}" inputmode="numeric" minlength="4" placeholder="minimum of 4 numbers" required> <br> <br>  
+							<label for="pin1">Re-type PIN:</label> <!--must be equal. See how to do it-->
+								<input type="Password" name="pin" pattern="[0-9]{4}" inputmode="numeric" minlength="4" placeholder="retype the same PIN" required> <br> <br>
+
 							<form ... onsubmit="return checkForm(this);">
 								<p><input id="field_terms" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you accept the Terms and Conditions' : '');" type="checkbox" required name="terms"> I accept the <u>Terms and Conditions</u></p>
 							</form>	

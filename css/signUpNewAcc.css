@@ -187,6 +187,12 @@ p{ /*missing JS -- not completely done yes*/
 	color: #999;
 }
 
+.pin1{
+	text-security: disc;
+    -webkit-text-security: disc;
+    -moz-text-security: disc;
+}
+
 #footer p{
 	clear: both;
 	text-align: center; 
@@ -206,10 +212,13 @@ p{ /*missing JS -- not completely done yes*/
   }
 }
 
-@media screen and (max-width:500px){
+@media screen and (max-width:600px){
 
 .container{
-	width: 100vw !important; 
+	width: 100vw;
+	height: 100vh;
+	width:100%;
+	height:100%;
 
 }
 
@@ -217,7 +226,7 @@ p{ /*missing JS -- not completely done yes*/
 	position: relative;
 	display: block;
 	width: 100%;
-	height:90%;
+	height:100%;
 	color: #fff;
 	opacity: 85%;
 	margin-left: -5em;
@@ -232,7 +241,7 @@ p{ /*missing JS -- not completely done yes*/
 }
 
 .signup__form{
-	width: 60% !important; 
+	width: 50% !important; 
     margin: 1.3em;	
 	}
 
