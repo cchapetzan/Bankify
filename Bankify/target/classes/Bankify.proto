@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "grpc.bank.bankify";
+option java_outer_classname = "BankifyServiceImpl";
+
+
+
+package bankify;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SendData (BankRequest) returns (BankReply) {}
+  rpc AddUser (NewUserData) returns (BankReply) {}
+  rpc GetBalance (AccountData) returns (FloatReply) {}
+  rpc TransferBalance (AccountTransfer) returns (FloatReply) {}
+  rpc UserLogin (LoginData) returns (LoginReply) {}
+  rpc UserLogout (LogoutData) returns (BankReply) {}
+}
+
+// The request message containing the user's name.
+message BankRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message BankReply {
+  string message = 1;
+}
+
+message NewUserData {
+  string firstName = 1;
+  string lastName = 2;
+  string id = 3;
+  string gender = 4;
+  string email = 5;
+  string password = 6;
+  int32 pin = 7;
+  string phone = 8;
+  string address = 9;
+}
+
+message AccountData {
+  int32 accountNumber = 1;
+  int32 pin = 2;
+}
+
+message FloatReply {
+	string message = 1;
+	float balance = 2;
+}
+
+message AccountTransfer {
+  int32 accountNumber = 1;
+  int32 pin = 2;
+  int32 toAccountNumber = 3;
+  float value = 4;
+}
+
+message LoginData {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginReply {
+  string LoginMessage = 1;
+  string FirstName = 2;
+  string email = 3;
+  int32 accountNumber = 4;
+}
+
+message LogoutData{
+  string email = 1;
+}
