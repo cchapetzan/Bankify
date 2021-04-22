@@ -5,12 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <script src="js/signUpNewAcc.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/signUpNewAcc.css">
+    <script src="js/SocialAccForm.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/SocialAccForm.css">
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"> 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<title>Open Your Account</title>
+	<title>Register For Social Account</title>
 	
 </head>
 <body>
@@ -19,21 +19,14 @@
 		<div>
 			<a href="index.html"><img src="images/bf_logo_test2.png" alt="logo_bankify" class="img-responsive"></a>
 		</div>
-			<a href="index.html">Home</a>
-			<a href="signUpNewAcc.html">Open Your Account</a>
-			<a href="login.html">Login to Your Account</a>
-			<a href="positiveImpact.html">Positive Impact</a>
-			<a href="aboutUs.html">About Us</a>
-			<a href="contactUs.html">Contact Us</a>
-			<a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
 	</div>
 	<div>
 		<div class="container">
-			<div class="img">
+			
 				<div class="signup_container">
 					<div class="container_child signup_form">
-						<h1>Welcome to Bankify.</h1>
-							<h2>Please fill the form for a new account.</h2>
+						<h1>Welcome to Social Bankify.</h1>
+							<h2>Please register your interest for a Social Account.</h2>
 							<h2>It will take less than a minute and it is super easy.</h2> <br> <br>
 						<form name="signUpForm" onsubmit="return formValid()" method="post">  
 							<label for="fistname">First Name:</label>         
@@ -58,12 +51,7 @@
 							<label for="password1">Choose Your Password:</label>
 								<input type="Password" id="pass" name="pass" size="25" placeholder="type your password" required> <br> <br>  
 							<label for="password1">Re-type password:</label> <!--must be equal. See how to do it-->
-								<input type="Password" id="repass" name="repass" size="25" placeholder="retype the same password" required> <br> <br>
-							<label for="pin1">Choose Your PIN:</label>
-								<input type="Password" name="pin" pattern="[0-9]{4}" inputmode="numeric" minlength="4" placeholder="minimum of 4 numbers" required> <br> <br>  
-							<label for="pin1">Re-type PIN:</label> <!--must be equal. See how to do it-->
-								<input type="Password" name="pin" pattern="[0-9]{4}" inputmode="numeric" minlength="4" placeholder="retype the same PIN" required> <br> <br>
-
+								<input type="Password" id="pass" name="pass" size="25" placeholder="type your password" required> <br> <br>  
 							<form ... onsubmit="return checkForm(this);">
 								<p><input id="field_terms" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you accept the Terms and Conditions' : '');" type="checkbox" required name="terms"> I accept the <u>Terms and Conditions</u></p>
 							</form>	
@@ -80,6 +68,7 @@
 			</div>
 		</div>
 	</div>
+
 </div>
 <div id="footer">
 	<p>Copyright &copy; 2021 - Bankify</p>
