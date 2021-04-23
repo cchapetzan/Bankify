@@ -8,15 +8,14 @@ option java_outer_classname = "BankifyServiceImpl";
 
 package bankify;
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
+service BankTransactions {
   rpc SendData (BankRequest) returns (BankReply) {}
   rpc AddUser (NewUserData) returns (BankReply) {}
-  rpc GetBalance (AccountData) returns (FloatReply) {}
-  rpc TransferBalance (AccountTransfer) returns (FloatReply) {}
   rpc UserLogin (LoginData) returns (LoginReply) {}
   rpc UserLogout (LogoutData) returns (BankReply) {}
+  rpc AccountMovement (LoginData) returns (stream MovementData) {}
+  rpc GetBalance (AccountData) returns (FloatReply) {}
+  rpc TransferBalance (AccountTransfer) returns (FloatReply) {}
 }
 
 // The request message containing the user's name.
@@ -72,4 +71,8 @@ message LoginReply {
 
 message LogoutData{
   string email = 1;
+}
+
+message MovementData{
+	string movement = 1;
 }

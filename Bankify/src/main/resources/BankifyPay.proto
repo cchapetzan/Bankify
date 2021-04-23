@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "grpc.bank.bankify";
+option java_outer_classname = "BankifyPayImpl";
+
+package bankify;
+
+service BankPay {
+  rpc HolderLogin (LoginData) returns (LoginPayReply) {}
+  rpc UserLogout (LogoutData) returns (BankReply) {}
+  rpc Pay (PayRequest) returns (PayReply) {}
+  rpc PayHistoryRegister (stream PayHistory) returns (BankReply) {}
+}
+
+message LoginData {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginPayReply {
+  string LoginMessage = 1;
+  string FirstName = 2;
+  int32 accountNumber = 3;
+}
+
+message LogoutData{
+  string email = 1;
+}
+
+message PayRequest {
+  string cardNumber = 1;
+  int32 pin = 2;
+  int32 holderAcc = 3;
+  float value = 4;
+}
+
+message PayHistory {
+  string cardNumber = 1;
+  int32 holderAcc = 2;
+  float value = 3;
+  string date = 4;
+}
+
+message PayReply{
+  string details = 1;
+  string name = 2;
+  float value = 3;
+  string date = 4;
+}
+
+message BankReply {
+  string message = 1;
+}

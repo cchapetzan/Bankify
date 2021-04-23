@@ -1,10 +1,11 @@
 package grpc.bank.bankify;
 
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import grpc.bank.bankify.GreeterGrpc.GreeterBlockingStub;
+import grpc.bank.bankify.BankTransactionsGrpc.BankTransactionsBlockingStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -23,7 +24,7 @@ public class BankifyClientLogin {
 				.usePlaintext()
 				.build();
 
-		GreeterBlockingStub  blockingStub = GreeterGrpc.newBlockingStub(channel);
+		BankTransactionsBlockingStub  blockingStub = BankTransactionsGrpc.newBlockingStub(channel);
 
 	    BankifyClientLogin client = new BankifyClientLogin();
 
@@ -36,6 +37,14 @@ public class BankifyClientLogin {
 	    	 LoginReply response = blockingStub.userLogin(request);
 
 	    	 logger.info("Login Status: " + response.getLoginMessage() + " " + response.getFirstName() + response.getEmail());
+	    	 
+	    	 Iterator<MovementData> responseMov = blockingStub.accountMovement(request);
+	    	 
+	    	 while(responseMov.hasNext()) {
+	    		 MovementData mov = responseMov.next();
+	    		 //logger.info("Movement: " + mov.getMovement());
+	    		 System.out.println(mov.getMovement());
+	    	 }
 	    	 
 	    	 //LogoutData request2 = LogoutData.newBuilder().setEmail(email).build();
 	    	 

@@ -59,6 +59,11 @@ public final class BankifyServiceImpl {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_bankify_LogoutData_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_bankify_MovementData_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_bankify_MovementData_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -83,17 +88,20 @@ public final class BankifyServiceImpl {
       "(\t\"[\n\nLoginReply\022\024\n\014LoginMessage\030\001 \001(\t\022\021" +
       "\n\tFirstName\030\002 \001(\t\022\r\n\005email\030\003 \001(\t\022\025\n\racco" +
       "untNumber\030\004 \001(\005\"\033\n\nLogoutData\022\r\n\005email\030\001" +
-      " \001(\t2\350\002\n\007Greeter\0226\n\010SendData\022\024.bankify.B" +
-      "ankRequest\032\022.bankify.BankReply\"\000\0225\n\007AddU" +
-      "ser\022\024.bankify.NewUserData\032\022.bankify.Bank" +
-      "Reply\"\000\0229\n\nGetBalance\022\024.bankify.AccountD" +
-      "ata\032\023.bankify.FloatReply\"\000\022B\n\017TransferBa" +
-      "lance\022\030.bankify.AccountTransfer\032\023.bankif" +
-      "y.FloatReply\"\000\0226\n\tUserLogin\022\022.bankify.Lo" +
-      "ginData\032\023.bankify.LoginReply\"\000\0227\n\nUserLo" +
-      "gout\022\023.bankify.LogoutData\032\022.bankify.Bank" +
-      "Reply\"\000B)\n\021grpc.bank.bankifyB\022BankifySer" +
-      "viceImplP\001b\006proto3"
+      " \001(\t\" \n\014MovementData\022\020\n\010movement\030\001 \001(\t2\263" +
+      "\003\n\020BankTransactions\0226\n\010SendData\022\024.bankif" +
+      "y.BankRequest\032\022.bankify.BankReply\"\000\0225\n\007A" +
+      "ddUser\022\024.bankify.NewUserData\032\022.bankify.B" +
+      "ankReply\"\000\0226\n\tUserLogin\022\022.bankify.LoginD" +
+      "ata\032\023.bankify.LoginReply\"\000\0227\n\nUserLogout" +
+      "\022\023.bankify.LogoutData\032\022.bankify.BankRepl" +
+      "y\"\000\022@\n\017AccountMovement\022\022.bankify.LoginDa" +
+      "ta\032\025.bankify.MovementData\"\0000\001\0229\n\nGetBala" +
+      "nce\022\024.bankify.AccountData\032\023.bankify.Floa" +
+      "tReply\"\000\022B\n\017TransferBalance\022\030.bankify.Ac" +
+      "countTransfer\032\023.bankify.FloatReply\"\000B)\n\021" +
+      "grpc.bank.bankifyB\022BankifyServiceImplP\001b" +
+      "\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -161,6 +169,12 @@ public final class BankifyServiceImpl {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_bankify_LogoutData_descriptor,
         new java.lang.String[] { "Email", });
+    internal_static_bankify_MovementData_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_bankify_MovementData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_bankify_MovementData_descriptor,
+        new java.lang.String[] { "Movement", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -5,6 +5,8 @@
  */
 package grpc.bank.bankify;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Camila Chapetzan Antunes
@@ -15,6 +17,7 @@ public class BankAccount {
     private int cardPin;
     private int accountType;
     private int accountNumber;
+    private ArrayList<AccountMovement> history;
 
     public BankAccount(int accountType, int accountNumber) {
         this.balance = 0;
@@ -22,6 +25,7 @@ public class BankAccount {
         this.cardPin = 0;
         this.accountType = accountType;
         this.accountNumber = accountNumber;
+        this.history = new ArrayList<AccountMovement>();
     }
 
     public float getBalance() {
@@ -30,10 +34,12 @@ public class BankAccount {
     
     public void deposit(float amount){
         balance += amount;
+        history.add(new AccountMovement(history.size()+1, "Deposit", amount));
     }
     
     public void withdraw(float amount){
         balance -= amount;
+        history.add(new AccountMovement(history.size()+1, "Withdraw", amount*-1));
     }
 
     public String getCardNumber() {
@@ -72,9 +78,14 @@ public class BankAccount {
         return (cardPin == pin) && cardNumber.equals(card);
     }
     
+    public void pay (float amount) {
+        balance -= amount;
+    	history.add(new AccountMovement(history.size()+1, "Payment", amount*-1));
+    }
+    
     public boolean pay(String card, int pin, float amount, BankAccount acc){
         if(validateCardTransaction(card, pin) && balance >= amount){
-            withdraw(amount);
+            pay(amount);
             acc.deposit(amount);
             return true;
         }
@@ -88,6 +99,10 @@ public class BankAccount {
             return true;
         }
         else return false;
+    }
+    
+    public ArrayList<AccountMovement> getHistory(){
+    	return history;
     }
     
 }
