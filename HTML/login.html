@@ -1,0 +1,66 @@
+ <!DOCTYPE html>
+<html lang="en-GB">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <script src="js/login.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"> 
+	<title>Login Bankify</title>
+	
+</head>
+<body>
+<div>
+	<div class="topnav" id="myTopnav">
+		<div>
+			<a href="index.html"><img src="images/bf_logo_test2.png" alt="logo_bankify" class="img-responsive"></a>
+		</div>
+			<a href="index.html">Home</a>
+			<a href="signUpNewAcc.html">Open Your Account</a>
+			<a href="login.html">Login to Your Account</a>
+			<a href="positiveImpact.html">Positive Impact</a>
+			<a href="aboutUs.html">About Us</a>
+			<a href="contactUs.html">Contact Us</a>
+			<a href="javascript:void(0);" class="icon" onclick="myFunction()">&#9776;</a>
+	</div>
+	<div>
+		<div class="container">
+			<div class="img">
+				<div class="singin_container">
+					<div class="container__child signin__form">
+					<form>
+						<h1 class="heading--primary">Welcome to Bankify</h1>
+							<h2 class="heading--secondary">Please login with your credentials</h2>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input class="form-control" type="text" name="email" id="email" placeholder="your@email.com" required />
+						</div>
+						<div class="form-group">
+							<label for="password">Password</label>
+							<input class="form-control" type="password" name="password" id="password" placeholder="********" required />
+						</div>
+						<div class="butonSubmit">
+							<ul class="list-inline">
+								<li>
+									<input class="btn btn-primary" type="submit" value="Sign In" onclick="location.href='acc_balance.html'" />
+								</li>
+								<li>
+									<a class="signin__link" href="#" onclick="alertgo()">I have lost my credentials</a>
+								</li>
+							</ul>
+						</div>
+					</form>  
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="footer">
+	<p>Copyright &copy; 2021 - Bankify</p>
+</div>
+</body>
+</html>

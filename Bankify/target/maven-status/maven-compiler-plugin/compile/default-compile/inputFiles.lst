@@ -16,12 +16,14 @@ C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\Bankif
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankUser.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\AccountTransfer.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\AccountDataOrBuilder.java
+C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayGUIClient.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\NewUserDataOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\MovementDataOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\NewSocialUserData.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\FloatReplyOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\MovementData.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayClient.java
+C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayGUIClient2.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayHistoryOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayReplyOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayRequest.java
@@ -31,6 +33,7 @@ C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayRep
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifySocialClient.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\LoginData.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyClientLogin.java
+C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifySocialGUIClient.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\LogoutDataOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyTransactionsServer.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\Bankify.java
