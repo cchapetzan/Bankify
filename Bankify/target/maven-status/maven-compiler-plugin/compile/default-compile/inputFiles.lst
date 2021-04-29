@@ -1,4 +1,5 @@
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankReplyOrBuilder.java
+C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayGUI2.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyAddUserClient.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\NewSocialUserDataOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayHistory.java
@@ -23,7 +24,6 @@ C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\NewSoc
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\FloatReplyOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\MovementData.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayClient.java
-C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayGUIClient2.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayHistoryOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayReplyOrBuilder.java
 C:\Users\dublin\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayRequest.java

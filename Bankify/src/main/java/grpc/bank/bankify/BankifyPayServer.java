@@ -8,7 +8,9 @@ import java.util.logging.Logger;
 import grpc.bank.bankify.BankPayGrpc.BankPayImplBase;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+import io.grpc.StatusRuntimeException;
 
 public class BankifyPayServer extends BankPayImplBase {
 	
@@ -44,6 +46,7 @@ public class BankifyPayServer extends BankPayImplBase {
 		 responseObserver.onNext(reply);
 
 	     responseObserver.onCompleted();
+	     System.out.println("login request successfull");
 	}
 	
 	@Override
@@ -73,12 +76,14 @@ public class BankifyPayServer extends BankPayImplBase {
 		 responseObserver.onNext(reply);
 
 	     responseObserver.onCompleted();
+	     
+	     System.out.println("logout request successfull");
 	}
 	
 	@Override
 	public void pay(PayRequest request,  StreamObserver<PayReply> responseObserver) {
 
-		System.out.println("receiving transfer request");
+		System.out.println("receiving pay request");
 		BankUser user;
 		BankUser toUser;
 		PayReply reply;
@@ -117,6 +122,46 @@ public class BankifyPayServer extends BankPayImplBase {
 		 responseObserver.onNext(reply);
 
 	     responseObserver.onCompleted();
+	     System.out.println("transfer request successfull");
+	}
+	
+	@Override
+	public StreamObserver<PayHistory> payHistoryRegister(StreamObserver<BankReply> responseObserver) {
+		System.out.println("receiving payHistoryRegister request");
+		return new StreamObserver<PayHistory>() {
+			private int pHsize = bank.paymentHistory.size();
+			private int requestSize = 0;
+			@Override
+            public void onNext(PayHistory request) {
+				String cardNumber = request.getCardNumber();
+				int holderAcc = request.getHolderAcc();
+				String date = request.getDate();
+				float value = request.getValue();
+				
+				bank.paymentHistory.add(new PaymentTransaction(cardNumber, holderAcc, date, value));
+				requestSize++;
+			}
+			
+			@Override
+            public void onError(Throwable t) {
+                System.out.println(t.getMessage());
+            }
+			
+			@Override
+            public void onCompleted() {
+				
+				if (bank.paymentHistory.size() == pHsize + requestSize) {
+					System.out.println("Payments History transfered successfully");
+					BankReply response = BankReply.newBuilder().setMessage("Payments History transfered successfully").build();
+					responseObserver.onNext(response);
+					responseObserver.onCompleted();
+				} else {
+					BankReply response = BankReply.newBuilder().setMessage("Payments History error").build();
+					responseObserver.onNext(response);
+					responseObserver.onCompleted();
+				}
+            }
+		};
 	}
 	
 }

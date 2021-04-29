@@ -3,6 +3,7 @@ package grpc.bank.bankify;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,12 +17,13 @@ import grpc.bank.bankify.BankTransactionsGrpc.BankTransactionsBlockingStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
-public class BankifyAddUserClient {
-	
+public class BankifyTransactionsClient {
+
 	private static ServiceInfo bankServiceInfo;
-
-	private static final Logger logger = Logger.getLogger(BankifyAddUserClient.class.getName());
+	
+	private static final Logger logger = Logger.getLogger(BankifyTransactionsClient.class.getName());
 
 
 	public static void main(String[] args) throws Exception {
@@ -43,25 +45,61 @@ public class BankifyAddUserClient {
 
 		BankTransactionsBlockingStub  blockingStub = BankTransactionsGrpc.newBlockingStub(channel);
 
-		BankifyAddUserClient client = new BankifyAddUserClient();
+		BankifyTransactionsClient client = new BankifyTransactionsClient();
 
 	    try {
-	    	 //String name = "Adding User: ";
-	    	 String firstName = "Britney";
-	    	 String lastName = "Spears";
-	    	 String id = "US123";
-	    	 String gender = "F";
-	    	 String email = "britney@spears.com";
-	    	 String password = "321654";
-	    	 int pin = 2799;
-	    	 String phone = "083-1234567";
-	    	 String address = "Dublin street";
+	    	 String email = "camila@camila.com";
+	    	 String password = "1234";
 	    	 //BankRequest request = BankRequest.newBuilder().setName(name).build();
-	    	 NewUserData request = NewUserData.newBuilder().setFirstName(firstName).setLastName(lastName).setId(id).setGender(gender).setEmail(email).setPassword(password).setPin(pin).setPhone(phone).setAddress(address).build();
+	    	 LoginData request = LoginData.newBuilder().setEmail(email).setPassword(password).build();
 
-	    	 BankReply response = blockingStub.addUser(request);
+	    	 LoginReply response = blockingStub.userLogin(request);
 
-	    	 logger.info("Added User: " + response.getMessage());
+	    	 logger.info("Login Status: " + response.getLoginMessage() + " " + response.getFirstName() + response.getEmail());
+	    	 
+	    	 Iterator<MovementData> responseMov = blockingStub.accountMovement(request);
+	    	 
+	    	 while(responseMov.hasNext()) {
+	    		 MovementData mov = responseMov.next();
+	    		 logger.info("Movement: " + mov.getMovement());
+	    	 }
+	    	 
+	    	 int accountNumber = 111111;
+	    	 int toAccountNumber = 111112;	    	 
+	    	 int pin = 123;
+	    	 float value = 125;
+	    	 //BankRequest request = BankRequest.newBuilder().setName(name).build();
+	    	 AccountData request2 = AccountData.newBuilder().setAccountNumber(accountNumber).setPin(pin).build();
+
+	    	 FloatReply response2 = blockingStub.getBalance(request2);
+	    	 
+	    	 if(response2.getBalance() == -1) {
+	    		 logger.info("Balance Status: " + response2.getMessage());
+	    	 } else {
+	    		 logger.info("Balance Status: " + response2.getMessage() + " " + response2.getBalance());
+	    	 }
+	    	 
+	    	 AccountTransfer request3 = AccountTransfer.newBuilder().setAccountNumber(accountNumber).setPin(pin).setToAccountNumber(toAccountNumber).setValue(value).build();
+
+	    	 FloatReply response3 = blockingStub.transferBalance(request3);
+	    	 
+	    	 if(response3.getBalance() == -1) {
+	    		 logger.info("Balance Status: " + response3.getMessage());
+	    	 } else {
+	    		 logger.info("Balance Status: " + response3.getMessage() + " " + response3.getBalance());
+	    	 }
+	    	 
+	    	 Iterator<MovementData> responseObserver = blockingStub.accountMovement(request);
+	    	 while(responseObserver.hasNext()) {
+	    		 MovementData mov = responseObserver.next();
+	    		 logger.info("Movement: " + mov.getMovement());
+	    	 }
+	    	 
+	    	 LogoutData request4 = LogoutData.newBuilder().setEmail(email).build();
+	    	 
+	    	 BankReply response4 = blockingStub.userLogout(request4);
+	    	 
+	    	 logger.info("Logout Status: " + response4.getMessage());
 
 	    } catch (StatusRuntimeException e) {
 		    logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
@@ -133,5 +171,5 @@ public class BankifyAddUserClient {
 		
 		
 	}
-
+	
 }

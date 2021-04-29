@@ -7,6 +7,8 @@ package grpc.bank.bankify;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,36 +16,44 @@ import java.util.logging.Logger;
 import javax.jmdns.ServiceInfo;
 
 import grpc.bank.bankify.BankPayGrpc.BankPayBlockingStub;
+import grpc.bank.bankify.BankPayGrpc.BankPayStub;
 import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
 /**
  *
  * @author Camila Chapetzan Antunes
  */
-public class BankifyPayGUIClient2 extends javax.swing.JFrame {
+public class BankifyPayGUI2 extends javax.swing.JFrame {
 	
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankPayBlockingStub blockingStub;
 	
+	private static BankPayStub asyncStub;
+	
 	private static ManagedChannel channel;
 
 	private static Logger logger2;
+	
+	private ArrayList<PaymentTransaction> paymentHistory;
 
     /**
      * Creates new form BankifySocialGUIClient
      */
-    public BankifyPayGUIClient2(String firstName, String email, int holderAcc, Logger logger2, ManagedChannel channel, BankPayBlockingStub blockingStub, ServiceInfo bankServiceInfo) {
+    public BankifyPayGUI2(String firstName, String email, int holderAcc, Logger logger2, ManagedChannel channel, BankPayBlockingStub blockingStub, BankPayStub asyncStub, ServiceInfo bankServiceInfo) {
     	this.firstName = firstName;
     	this.email = email;
     	this.holderAcc = holderAcc;
     	this.logger2 = logger2;
     	this.channel = channel;
     	this.blockingStub = blockingStub;
+    	this.asyncStub = asyncStub;
     	this.bankServiceInfo = bankServiceInfo;
         initComponents();
         jLabel14.setText("Welcome back Mister " + this.firstName + " " + this.email);
+    	paymentHistory = new ArrayList<>(); 
     }
 
     /**
@@ -85,12 +95,24 @@ public class BankifyPayGUIClient2 extends javax.swing.JFrame {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
             		try {
-            			LogoutData request3 = LogoutData.newBuilder().setEmail(email).build();
+            			
+            			ArrayList<String> resp = BankifyPayGUI2.this.payTrans(paymentHistory, asyncStub);
+            			Thread.sleep(6000);
+            			if (resp.isEmpty()||resp.get(0).equals("Payments History error")) {
+            				logger2.info("Pay History Transfer error");
+   			    			javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, "Pay History Transfer error");
+            			} else {
+            				logger2.info("Pay History Transfer Succeeded, Bankify Pay will close");
+   			    			javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, "Pay History Transfer Succeeded, Bankify Pay will close");
+            				LogoutData request3 = LogoutData.newBuilder().setEmail(email).build();
+                  	    	 
+               	    	 	BankReply response3 = blockingStub.userLogout(request3);
+               	    	 	
+               	    	 	logger2.info("Logout Status: " + response3.getMessage());
+    						channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+            			}
            	    	 
-           	    	 	BankReply response3 = blockingStub.userLogout(request3);
-           	    	 
-           	    	 	logger2.info("Logout Status: " + response3.getMessage());
-						channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -200,10 +222,13 @@ public class BankifyPayGUIClient2 extends javax.swing.JFrame {
 			    	
 			    	 if(response2.getValue() == -1) {
 			    		 logger2.info("Payment Status: " + response2.getDetails());
-			    		 javax.swing.JOptionPane.showMessageDialog(BankifyPayGUIClient2.this, response2.getDetails());
+			    		 javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, response2.getDetails());
 			    	 } else {
 			    		 logger2.info(response2.getDetails() + " " + response2.getDate() + " " + response2.getName() + " " + response2.getValue());
-			    		 javax.swing.JOptionPane.showMessageDialog(BankifyPayGUIClient2.this, response2.getDetails() + " on " + response2.getDate() + " by " + response2.getName() + ": " + response2.getValue());
+			    		 javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, response2.getDetails() + " on " + response2.getDate() + " by " + response2.getName() + ": " + response2.getValue());
+			    		 
+			    		 paymentHistory.add(new PaymentTransaction(cardNumber, holderAcc, response2.getDate(), response2.getValue()));
+			    		 
 			    	 }
 
 					jLabel14.setText("Welcome back Mister " + firstName + " " + email);
@@ -317,13 +342,13 @@ public class BankifyPayGUIClient2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BankifyPayGUIClient2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BankifyPayGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BankifyPayGUIClient2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BankifyPayGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BankifyPayGUIClient2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BankifyPayGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BankifyPayGUIClient2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BankifyPayGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -331,9 +356,49 @@ public class BankifyPayGUIClient2 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BankifyPayGUIClient2(firstName, email, holderAcc, logger2, channel, blockingStub, bankServiceInfo).setVisible(true);
+                new BankifyPayGUI2(firstName, email, holderAcc, logger2, channel, blockingStub, asyncStub, bankServiceInfo).setVisible(true);
             }
         });
+    }
+    
+    private ArrayList<String> payTrans(ArrayList<PaymentTransaction> list, BankPayStub asyncStub) throws InterruptedException, RuntimeException {
+    	ArrayList<String> resp = new ArrayList<>();
+    	final CountDownLatch finishLatch = new CountDownLatch(1);
+    	StreamObserver<PayHistory> requestObserver = asyncStub.withDeadlineAfter(5, TimeUnit.SECONDS)
+    			.payHistoryRegister(new StreamObserver<BankReply>() {
+    		@Override
+            public void onNext(BankReply response) {
+    			resp.add(response.getMessage());
+    		}
+    		@Override
+            public void onError(Throwable t) {
+                logger2.info(t.getMessage());
+                finishLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+            	finishLatch.countDown();             
+            }
+    	});
+    	
+    	try {
+    		for (int i = 0; i < list.size(); i++) {
+    			PaymentTransaction temp = list.get(i);
+    			PayHistory req = PayHistory.newBuilder().setCardNumber(temp.getCardPay()).setHolderAcc(temp.getToAccount()).setDate(temp.getDate()).setValue(temp.getValue()).build();
+    			requestObserver.onNext(req);
+    		}
+    		
+    	} catch (RuntimeException e) {
+            // Cancel RPC
+            requestObserver.onError(e);
+            return resp;
+        }
+    	requestObserver.onCompleted();
+    	if (!finishLatch.await(5, TimeUnit.SECONDS)) {
+            logger2.warning("request cannot finish within 1 minute");
+        }
+    	return resp;
     }
     
 	private static String firstName;
@@ -342,6 +407,7 @@ public class BankifyPayGUIClient2 extends javax.swing.JFrame {
 	private float value;
 	private int pin;
 	private String cardNumber;
+	private String bankMessage;
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1;
@@ -358,5 +424,6 @@ public class BankifyPayGUIClient2 extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField3;
-    // End of variables declaration                   
+    // End of variables declaration
+   
 }

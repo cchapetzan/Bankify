@@ -2,7 +2,6 @@ grpc\bank\bankify\BankifyGeneralServer.class
 grpc\bank\bankify\BankPayGrpc$BankPayBaseDescriptorSupplier.class
 grpc\bank\bankify\NewUserData.class
 grpc\bank\bankify\AccountTransfer$1.class
-grpc\bank\bankify\BankifyPayGUIClient2$2.class
 grpc\bank\bankify\BankReply$1.class
 grpc\bank\bankify\BankifySocialServer.class
 grpc\bank\bankify\BankSocialGrpc$BankSocialFutureStub.class
@@ -11,10 +10,12 @@ grpc\bank\bankify\LogoutData$Builder.class
 grpc\bank\bankify\Bankify.class
 grpc\bank\bankify\BankSocialGrpc$BankSocialImplBase.class
 grpc\bank\bankify\BankTransactionsGrpc$BankTransactionsMethodDescriptorSupplier.class
+grpc\bank\bankify\BankifyPayGUI2$3.class
 grpc\bank\bankify\BankifyPayServer.class
 grpc\bank\bankify\LoginReply$Builder.class
 grpc\bank\bankify\LoginData.class
 grpc\bank\bankify\BankifySocialGUIClient$5.class
+grpc\bank\bankify\BankifyPayServer$1.class
 grpc\bank\bankify\BankPayGrpc.class
 grpc\bank\bankify\BankTransactionsGrpc$BankTransactionsImplBase.class
 grpc\bank\bankify\LoginReply.class
@@ -27,7 +28,6 @@ grpc\bank\bankify\BankSocialGrpc$BankSocialMethodDescriptorSupplier.class
 grpc\bank\bankify\BankPayGrpc$BankPayMethodDescriptorSupplier.class
 grpc\bank\bankify\BankSocialGrpc$BankSocialBaseDescriptorSupplier.class
 grpc\bank\bankify\BankifyPayGUIClient$5.class
-grpc\bank\bankify\BankifyPayGUIClient2$4.class
 grpc\bank\bankify\BankifySocialClient$1.class
 grpc\bank\bankify\BankSocialGrpc$1.class
 grpc\bank\bankify\BankRequest$Builder.class
@@ -39,7 +39,6 @@ grpc\bank\bankify\BankPayGrpc$1.class
 grpc\bank\bankify\PayReply$1.class
 grpc\bank\bankify\BankPayGrpc$BankPayFileDescriptorSupplier.class
 grpc\bank\bankify\NewSocialUserData$Builder.class
-grpc\bank\bankify\BankifyPayGUIClient2.class
 grpc\bank\bankify\BankifySocialImpl.class
 grpc\bank\bankify\LoginReply$1.class
 grpc\bank\bankify\BankTransactionsGrpc$BankTransactionsFileDescriptorSupplier.class
@@ -48,13 +47,14 @@ grpc\bank\bankify\PayHistory.class
 grpc\bank\bankify\BankifyServiceImpl.class
 grpc\bank\bankify\BankifySocialImpl$1.class
 grpc\bank\bankify\BankifySocialClient.class
-grpc\bank\bankify\BankifyPayGUIClient2$3.class
 grpc\bank\bankify\BankifyPayGUIClient$4.class
 grpc\bank\bankify\BankTransactionsGrpc.class
 grpc\bank\bankify\AccountTransfer.class
 grpc\bank\bankify\LoginData$Builder.class
+grpc\bank\bankify\BankifyPayGUI2.class
 grpc\bank\bankify\BankRequest.class
 grpc\bank\bankify\AccountTransfer$Builder.class
+grpc\bank\bankify\BankifyPayGUI2$4.class
 grpc\bank\bankify\BankPayGrpc$BankPayBlockingStub.class
 grpc\bank\bankify\LoginData$1.class
 grpc\bank\bankify\BankifyClientTransactions$1.class
@@ -89,6 +89,7 @@ grpc\bank\bankify\BankifyClientTransactions.class
 grpc\bank\bankify\PayHistory$Builder.class
 grpc\bank\bankify\PayReplyOrBuilder.class
 grpc\bank\bankify\BankReplyOrBuilder.class
+grpc\bank\bankify\BankifyPayGUI2$2.class
 grpc\bank\bankify\BankReply.class
 grpc\bank\bankify\BankAccount.class
 grpc\bank\bankify\PayRequestOrBuilder.class
@@ -102,7 +103,6 @@ grpc\bank\bankify\FloatReply$1.class
 grpc\bank\bankify\NewSocialUserData$1.class
 grpc\bank\bankify\MovementData.class
 grpc\bank\bankify\BankReply$Builder.class
-grpc\bank\bankify\BankifyPayGUIClient2$1.class
 grpc\bank\bankify\BankPayGrpc$BankPayStub.class
 grpc\bank\bankify\FloatReply.class
 grpc\bank\bankify\PayRequest$Builder.class
@@ -118,6 +118,7 @@ grpc\bank\bankify\LoginPayReply$Builder.class
 grpc\bank\bankify\BankTransactionsGrpc$BankTransactionsBaseDescriptorSupplier.class
 grpc\bank\bankify\BankTransactionsGrpc$BankTransactionsBlockingStub.class
 grpc\bank\bankify\PaymentTransaction.class
+grpc\bank\bankify\BankifyPayGUI2$1.class
 grpc\bank\bankify\LoginPayReply.class
 grpc\bank\bankify\LogoutData.class
 grpc\bank\bankify\LoginReplyOrBuilder.class

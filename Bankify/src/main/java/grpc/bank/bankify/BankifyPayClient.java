@@ -3,7 +3,9 @@ package grpc.bank.bankify;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,15 +16,19 @@ import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
 import grpc.bank.bankify.BankPayGrpc.BankPayBlockingStub;
+import grpc.bank.bankify.BankPayGrpc.BankPayStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
 public class BankifyPayClient {
 	
 	private static ServiceInfo bankServiceInfo;
 
 	private static final Logger logger = Logger.getLogger(BankifyPayClient.class.getName());
+	
+	private static ArrayList<PaymentTransaction> paymentHistory = new ArrayList<>();
 
 
 	public static void main(String[] args) throws Exception {
@@ -43,6 +49,8 @@ public class BankifyPayClient {
 				.build();
 
 		BankPayBlockingStub  blockingStub = BankPayGrpc.newBlockingStub(channel);
+		
+		BankPayStub asyncStub = BankPayGrpc.newStub(channel);;
 
 		BankifyPayClient client = new BankifyPayClient();
 
@@ -69,24 +77,44 @@ public class BankifyPayClient {
 	    		 logger.info("Payment Status: " + response2.getDetails());
 	    	 } else {
 	    		 logger.info("Balance Status: " + response2.getDetails() + " " + response2.getDate() + " " + response2.getName() + " " + response2.getValue());
+	    		 paymentHistory.add(new PaymentTransaction(card, holderAcc, response2.getDate(), response2.getValue()));
+	    		 
 	    	 }
-	    			 
+	    	 
+	    	 PayRequest request2a = PayRequest.newBuilder().setCardNumber(card).setPin(pin).setHolderAcc(holderAcc).setValue(value+30).build();
+	    	 
+	    	 PayReply response2a = blockingStub.pay(request2a);
+	    	 
+	    	 if(response2a.getValue() == -1) {
+	    		 logger.info("Payment Status: " + response2a.getDetails());
+	    	 } else {
+	    		 logger.info("Balance Status: " + response2a.getDetails() + " " + response2a.getDate() + " " + response2a.getName() + " " + response2a.getValue());
+	    		 paymentHistory.add(new PaymentTransaction(card, holderAcc, response2a.getDate(), response2a.getValue()));
+	    		 
+	    	 }
+	    	 
+	    	 ArrayList<String> resp = payTrans(paymentHistory, asyncStub);
+ 			 Thread.sleep(6000);
+	    	
+			 logger.info(resp.get(0).toString());
+	    	 
 	    	 LogoutData request3 = LogoutData.newBuilder().setEmail(email).build();
 	    	 
 	    	 BankReply response3 = blockingStub.userLogout(request3);
 	    	 
 	    	 logger.info("Logout Status: " + response3.getMessage());
+	    	 channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 
 	    } catch (StatusRuntimeException e) {
 		    logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
 
 		    return;
 
-	    } finally {
-	    	//shutdown channel
-	    	channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-	    }
-	  }
+	    } catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 
 	private static void discoverBankifyService(String service_type) {
 		
@@ -147,5 +175,45 @@ public class BankifyPayClient {
 		
 		
 	}
+	
+    private static ArrayList<String> payTrans(ArrayList<PaymentTransaction> list, BankPayStub asyncStub) throws InterruptedException, RuntimeException {
+    	ArrayList<String> resp = new ArrayList<>();
+    	final CountDownLatch finishLatch = new CountDownLatch(1);
+    	StreamObserver<PayHistory> requestObserver = asyncStub.withDeadlineAfter(5, TimeUnit.SECONDS)
+    			.payHistoryRegister(new StreamObserver<BankReply>() {
+    		@Override
+            public void onNext(BankReply response) {
+    			resp.add(response.getMessage());
+    		}
+    		@Override
+            public void onError(Throwable t) {
+                logger.info(t.getMessage());
+                finishLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+            	finishLatch.countDown();             
+            }
+    	});
+    	
+    	try {
+    		for (int i = 0; i < list.size(); i++) {
+    			PaymentTransaction temp = list.get(i);
+    			PayHistory req = PayHistory.newBuilder().setCardNumber(temp.getCardPay()).setHolderAcc(temp.getToAccount()).setDate(temp.getDate()).setValue(temp.getValue()).build();
+    			requestObserver.onNext(req);
+    		}
+    		
+    	} catch (RuntimeException e) {
+            // Cancel RPC
+            requestObserver.onError(e);
+            return resp;
+        }
+    	requestObserver.onCompleted();
+    	if (!finishLatch.await(5, TimeUnit.SECONDS)) {
+            logger.warning("request cannot finish within 1 minute");
+        }
+    	return resp;
+    }
 
 }

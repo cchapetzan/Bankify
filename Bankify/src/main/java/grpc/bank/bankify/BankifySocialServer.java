@@ -31,7 +31,7 @@ public class BankifySocialServer extends BankSocialImplBase {
 	@Override
 	public void addSocialUser(NewSocialUserData request,  StreamObserver<BankReply> responseObserver) {
 
-		System.out.println("receiving add user request");
+		System.out.println("receiving add social user request");
 		
 		bank.addSocial(request.getFirstName(), request.getLastName(), request.getId(), request.getGender().charAt(0), request.getEmail(), request.getPassword(), request.getPhone(), request.getAddress());
 
@@ -40,6 +40,7 @@ public class BankifySocialServer extends BankSocialImplBase {
 		 responseObserver.onNext(reply);
 
 	     responseObserver.onCompleted();
+			System.out.println("add social user request completed");
 	}
 
 

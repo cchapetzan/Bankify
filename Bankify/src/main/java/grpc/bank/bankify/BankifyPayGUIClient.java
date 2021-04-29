@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -21,7 +22,7 @@ import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
 import grpc.bank.bankify.BankPayGrpc.BankPayBlockingStub;
-import grpc.bank.bankify.BankSocialGrpc.BankSocialBlockingStub;
+import grpc.bank.bankify.BankPayGrpc.BankPayStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
@@ -35,6 +36,8 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankPayBlockingStub blockingStub;
+	
+	private static BankPayStub asyncStub;
 	
 	private static ManagedChannel channel;
 
@@ -186,10 +189,8 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 
 					jLabel14.setText("Login Status: " + response.getLoginMessage() + " " + response.getFirstName() + " " +  response.getAccountNumber());
 					
-					//jTextField4.setText("");
-					//jPasswordField1.setText("");
 					
-					BankifyPayGUIClient2 bpgc2 = new BankifyPayGUIClient2(firstName, email, holderAcc, logger2, channel, blockingStub, bankServiceInfo);
+					BankifyPayGUI2 bpgc2 = new BankifyPayGUI2(firstName, email, holderAcc, logger2, channel, blockingStub, asyncStub, bankServiceInfo);
 					bpgc2.setVisible(true);
 					bpgc.setVisible(false);
 					
@@ -304,6 +305,7 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 				.build();
 
 		blockingStub = BankPayGrpc.newBlockingStub(channel);
+		asyncStub = BankPayGrpc.newStub(channel);
 
 		BankifyPayClient client = new BankifyPayClient();
         /* Set the Nimbus look and feel */
