@@ -205,8 +205,8 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
 			
 	    		if(jTextField1.getText().equals("")||jPasswordField1.getPassword().equals("")||jTextField3.getText().equals("")) {
 	    			if(jTextField1.getText().equals("")) jLabel14.setText("<HTML>Please fill your card.<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
-	    			if(jPasswordField1.getPassword().equals("")) jLabel14.setText("<HTML>Please fill your card.<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
-	    			if(jTextField3.getText().equals("")) jLabel14.setText("<HTML>Please fill your card.<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
+	    			if(!String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) jLabel14.setText("<HTML>Please fill your pin correctly (4 digit number).<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
+	    			if(jTextField3.getText().equals("")) jLabel14.setText("<HTML>Please fill your value.<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
 	    			return;
 	    		}
 	    		
@@ -363,6 +363,10 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
     
     private ArrayList<String> payTrans(ArrayList<PaymentTransaction> list, BankPayStub asyncStub) throws InterruptedException, RuntimeException {
     	ArrayList<String> resp = new ArrayList<>();
+    	if (list.isEmpty()){
+    		resp.add("Payments History transfered successfully");
+    		return resp;
+    	}
     	final CountDownLatch finishLatch = new CountDownLatch(1);
     	StreamObserver<PayHistory> requestObserver = asyncStub.withDeadlineAfter(5, TimeUnit.SECONDS)
     			.payHistoryRegister(new StreamObserver<BankReply>() {

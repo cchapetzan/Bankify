@@ -51,7 +51,7 @@ public class BankifyTransactionsServer extends BankTransactionsImplBase {
 		LoginReply reply;
 		user = bank.searchUser(request.getEmail());
 		if(Objects.isNull(user)) {
-			 reply = LoginReply.newBuilder().setLoginMessage("Bank User not found").setFirstName("").build();
+			 reply = LoginReply.newBuilder().setLoginMessage("Bank User not found").setFirstName("").setEmail("").build();
 
 			 responseObserver.onNext(reply);
 
@@ -61,7 +61,7 @@ public class BankifyTransactionsServer extends BankTransactionsImplBase {
 		}
 		
 		if(user.login(request.getEmail(), request.getPassword())) {		
-			reply = LoginReply.newBuilder().setLoginMessage("User is logged in:").setFirstName(user.getFirstName()).setEmail(user.getEmail()).build();
+			reply = LoginReply.newBuilder().setLoginMessage("User is logged in:").setFirstName(user.getFirstName()).setEmail(user.getEmail()).setAccountNumber(user.account.getAccountNumber()).build();
 		} else {
 			reply = LoginReply.newBuilder().setLoginMessage("Password missmatch").setFirstName("").setEmail("").build();
 		}

@@ -423,8 +423,15 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
-		String host = bankServiceInfo.getHostAddresses()[0];
-		int port = bankServiceInfo.getPort();
+		String host;
+		int port; 
+		try {
+			host = bankServiceInfo.getHostAddresses()[0];
+			port = bankServiceInfo.getPort();
+		} catch (NullPointerException e){
+			logger2.info("Cannot find server");
+			return;
+		}
 		
 		System.out.println(host+" "+port);
 

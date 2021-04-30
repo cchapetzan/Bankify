@@ -23,7 +23,7 @@ public class BankifyGeneralServer {
 	
 	public static void main(String[] args) {
 
-		bank.addUser("Camila", "Antunes", "123", 'F', "camila@camila.com", "1234", 123, "12345", "Street");
+		bank.addUser("Camila", "Antunes", "123", 'F', "camila@camila.com", "12345678", 1234, "12345", "Street");
 		bank.addUser("Paulo", "Antunes", "123", 'M', "paulo@camila.com", "1234", 123, "12345", "Street");
 		bank.addUser("Mister", "Entrepeneur", "45678", 'M', "mister@business.ie", "1234", 123, "083456", "Avenue");
 		bank.users.get(0).account.deposit(250);

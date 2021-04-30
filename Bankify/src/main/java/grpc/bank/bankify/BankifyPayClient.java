@@ -38,8 +38,15 @@ public class BankifyPayClient {
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
-		String host = bankServiceInfo.getHostAddresses()[0];
-		int port = bankServiceInfo.getPort();
+		String host;
+		int port; 
+		try {
+			host = bankServiceInfo.getHostAddresses()[0];
+			port = bankServiceInfo.getPort();
+		} catch (NullPointerException e){
+			logger.info("Cannot find server");
+			return;
+		}
 		
 		System.out.println(host+" "+port);
 		
@@ -58,7 +65,7 @@ public class BankifyPayClient {
 	    	 String email = "mister@business.ie";
 	    	 String password = "1234";
 	    	 String card = "4321-2345";
-	    	 int pin = 123;
+	    	 int pin = 1234;
 	    	 int holderAcc;
 	    	 float value = 130;
 	    	 LoginData request = LoginData.newBuilder().setEmail(email).setPassword(password).build();
