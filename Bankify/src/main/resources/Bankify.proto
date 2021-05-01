@@ -4,30 +4,25 @@ option java_multiple_files = true;
 option java_package = "grpc.bank.bankify";
 option java_outer_classname = "BankifyServiceImpl";
 
-
-
+//Camila Chapetzan Antunes
 package bankify;
 
+//Service for Bankify user transactions
 service BankTransactions {
-  rpc SendData (BankRequest) returns (BankReply) {}
-  rpc AddUser (NewUserData) returns (BankReply) {}
-  rpc UserLogin (LoginData) returns (LoginReply) {}
-  rpc UserLogout (LogoutData) returns (BankReply) {}
-  rpc AccountMovement (LoginData) returns (stream MovementData) {}
-  rpc GetBalance (AccountData) returns (FloatReply) {}
-  rpc TransferBalance (AccountTransfer) returns (FloatReply) {}
+  rpc AddUser (NewUserData) returns (BankReply) {} //add new client
+  rpc UserLogin (LoginData) returns (LoginReply) {} //user login
+  rpc UserLogout (LogoutData) returns (BankReply) {} //user logout
+  rpc AccountMovement (AccountData) returns (stream MovementData) {} //request all previous account history
+  rpc GetBalance (AccountData) returns (FloatReply) {} //get account balance
+  rpc TransferBalance (AccountTransfer) returns (FloatReply) {} //transfer amount to another account
 }
 
-// The request message containing the user's name.
-message BankRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
+// The basic answer message from bankify
 message BankReply {
   string message = 1;
 }
 
+// Message with all the necessary data for a new user
 message NewUserData {
   string firstName = 1;
   string lastName = 2;
@@ -40,16 +35,19 @@ message NewUserData {
   string address = 9;
 }
 
+// Account and pin for AccountMovement, GetBalance
 message AccountData {
   int32 accountNumber = 1;
   int32 pin = 2;
 }
 
+// Actual balance and message GetBalance & TransferBalance
 message FloatReply {
 	string message = 1;
 	float balance = 2;
 }
 
+// Account, pin, Destination account and value for TransferBalance
 message AccountTransfer {
   int32 accountNumber = 1;
   int32 pin = 2;
@@ -57,11 +55,13 @@ message AccountTransfer {
   float value = 4;
 }
 
+// Email and Password for login
 message LoginData {
   string email = 1;
   string password = 2;
 }
 
+// Login reply with user first name, email and account number
 message LoginReply {
   string LoginMessage = 1;
   string FirstName = 2;
@@ -69,10 +69,12 @@ message LoginReply {
   int32 accountNumber = 4;
 }
 
+// E-mail for logout
 message LogoutData{
   string email = 1;
 }
 
+// movement string return for AccountMovement
 message MovementData{
 	string movement = 1;
 }

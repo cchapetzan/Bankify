@@ -13,22 +13,31 @@ import javax.jmdns.ServiceInfo;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
+/**
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyGeneralServer - Bank general server for all 3 gRPC services
+* - create bankify data
+* - create servers for each service
+* - get services properties from internal configuration file
+* - register servers on jmDNS instance
+* - start servers 
+*/
 public class BankifyGeneralServer {
 	
 	static Bankify bank = new Bankify();
 
+	//loggers for each service
 	private static final Logger logger = Logger.getLogger(BankifyTransactionsServer.class.getName());
 	private static final Logger logger2 = Logger.getLogger(BankifySocialServer.class.getName());
 	private static final Logger logger3 = Logger.getLogger(BankifyPayServer.class.getName());
 	
 	public static void main(String[] args) {
-
-		bank.addUser("Camila", "Antunes", "123", 'F', "camila@camila.com", "12345678", 1234, "12345", "Street");
-		bank.addUser("Paulo", "Antunes", "123", 'M', "paulo@camila.com", "1234", 123, "12345", "Street");
-		bank.addUser("Mister", "Entrepeneur", "45678", 'M', "mister@business.ie", "1234", 123, "083456", "Avenue");
-		bank.users.get(0).account.deposit(250);
-		bank.users.get(0).account.deposit(3000);
-		bank.users.get(0).account.setCardNumber("4321-2345");
+		
+		//bank mock data
+		bank.mockData();
+		
+		//create servers, one for each service
 		BankifyTransactionsServer bankTransactionsServer = new BankifyTransactionsServer();
 		bankTransactionsServer.setBank(bank);
 		BankifySocialServer bankSocialServer = new BankifySocialServer();
@@ -36,13 +45,18 @@ public class BankifyGeneralServer {
 		BankifyPayServer bankPayServer = new BankifyPayServer();
 		bankPayServer.setBank(bank);
 		
+		//get services properties from internal configuration file
 		Properties prop = getProperties();
+		
+		//register servers on jmDNS instance
 		registerService(prop);
 
+		//get ports of all services
 		int port1 = Integer.valueOf(prop.getProperty("service1_port") );// #.50051;
 		int port2 = Integer.valueOf( prop.getProperty("service2_port") );// #.50052;
 		int port3 = Integer.valueOf( prop.getProperty("service3_port") );// #.50053;
 
+		//start servers
 		try {
 			Server server1 = ServerBuilder.forPort(port1)
 			    .addService(bankTransactionsServer)
@@ -60,6 +74,7 @@ public class BankifyGeneralServer {
 
 			System.out.println("All services started");
 			
+			//wait for clients
 			server1.awaitTermination();
 			server2.awaitTermination();
 			server3.awaitTermination();
@@ -81,16 +96,18 @@ public class BankifyGeneralServer {
 
 	}
 	
+	//method getProperties
+	//this method will get services properties from internal file
 	private static Properties getProperties() {
 		
 		Properties prop = null;		
 		
-		 try (InputStream input = new FileInputStream("src/main/resources/bankify.properties")) {
+		 try (InputStream input = new FileInputStream("src/main/resources/bankify.properties")) { //load file
 
 	            prop = new Properties();
 
 	            // load a properties file
-	            prop.load(input);
+	            prop.load(input);//properties loaded from input
 
 	            // get the property value and print it out
 	            System.out.println("Bankify Service properies ...");
@@ -112,26 +129,29 @@ public class BankifyGeneralServer {
 		 return prop;
 	}
 	
+	//method registerService
+	//this method will register all servers in a jmDNS instance
 	private static void registerService(Properties prop) {
 		
 		 try {
 	            // Create a JmDNS instance
 	            JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 	            
-	            String service_type = prop.getProperty("service_type") ;//"_http._tcp.local.";
-	            String service1_name = prop.getProperty("service1_name")  ;// "example";
+	            //services properties
+	            String service_type = prop.getProperty("service_type");//"_http._tcp.local.";
+	            String service1_name = prop.getProperty("service1_name");
 	            int service1_port = Integer.valueOf( prop.getProperty("service1_port") );// #.50051;
-	            String service2_name = prop.getProperty("service2_name")  ;// "example";
-	            int service2_port = Integer.valueOf( prop.getProperty("service2_port") );// #.50051;
-	            String service3_name = prop.getProperty("service3_name")  ;// "example";
-	            int service3_port = Integer.valueOf( prop.getProperty("service3_port") );// #.50051;
+	            String service2_name = prop.getProperty("service2_name");
+	            int service2_port = Integer.valueOf( prop.getProperty("service2_port") );// #.50052;
+	            String service3_name = prop.getProperty("service3_name");
+	            int service3_port = Integer.valueOf( prop.getProperty("service3_port") );// #.50053;
 
+	            //services descriptions
+	            String service1_description_properties = prop.getProperty("service1_description");
+	            String service2_description_properties = prop.getProperty("service2_description");
+	            String service3_description_properties = prop.getProperty("service3_description");
 	            
-	            String service1_description_properties = prop.getProperty("service1_description")  ;//"path=index.html";
-	            String service2_description_properties = prop.getProperty("service2_description")  ;//"path=index.html";
-	            String service3_description_properties = prop.getProperty("service3_description")  ;//"path=index.html";
-	            
-	            // Register a service
+	            // Register services
 	            ServiceInfo service1Info = ServiceInfo.create(service_type, service1_name, service1_port, service1_description_properties);
 	            ServiceInfo service2Info = ServiceInfo.create(service_type, service2_name, service2_port, service2_description_properties);
 	            ServiceInfo service3Info = ServiceInfo.create(service_type, service3_name, service3_port, service3_description_properties);

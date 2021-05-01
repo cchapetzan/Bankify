@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ *Pay history fields for PayHistoryRegister
+ * </pre>
+ *
  * Protobuf type {@code bankify.PayHistory}
  */
 public  final class PayHistory extends
@@ -377,6 +381,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   *Pay history fields for PayHistoryRegister
+   * </pre>
+   *
    * Protobuf type {@code bankify.PayHistory}
    */
   public static final class Builder extends

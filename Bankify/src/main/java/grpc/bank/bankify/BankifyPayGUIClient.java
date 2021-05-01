@@ -28,11 +28,14 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
 /**
- *
- * @author Camila Chapetzan Antunes
- */
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyPayGUIClient
+* - client-side GUI implementation of gRPC service BankifyPay
+*/
 public class BankifyPayGUIClient extends javax.swing.JFrame {
-
+	
+	//variables for gRPC and jmDNS
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankPayBlockingStub blockingStub;
@@ -44,7 +47,7 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 	private static final Logger logger2 = Logger.getLogger(BankifySocialClient.class.getName());
 	
     /**
-     * Creates new form BankifySocialGUIClient
+     * Creates new form BankifyPayGUIClient
      */
     public BankifyPayGUIClient() {
         initComponents();
@@ -83,6 +86,9 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         
+        /*
+         * window closing action listener: chanel shutdown
+         */
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -155,6 +161,9 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 400));
 
         jButton1.setText("Reset");
+        /*
+         * Reset button action: clear all fields
+         */
         jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jTextField4.setText("");
@@ -164,18 +173,24 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 		});
 
         jButton2.setText("Send");
+        /*
+         * Send button action: Validate all the fields and call gRPC method holderLogin
+         * if positive starts new JFrame BankifyPayGUI2
+         */
         jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-	    		email = jTextField4.getText();//"britney@spears.com";
-	    		password = String.valueOf(jPasswordField1.getPassword());//"321654";
+	    		email = jTextField4.getText();//"mister@business.ie";
+	    		password = String.valueOf(jPasswordField1.getPassword());//"abcdefgh";
 	    		
+	    		//fields validation	    		
 	    		if(email.equals("")||password.equals("")) {
 	    			if(email.equals("")) jLabel14.setText("Please fill your e-mail.");
 	    			if(password.equals("")) jLabel14.setText("Please fill your password.");
 	    			return;
 	    		}
 				
+	    		//gRPC method holderLogin calling
 		    	try {
 		    	
 		    		LoginData request = LoginData.newBuilder().setEmail(email).setPassword(password).build();
@@ -183,17 +198,22 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 			    	LoginPayReply response = blockingStub.holderLogin(request);
 
 			    	logger2.info("Login Status: " + response.getLoginMessage() + " " + response.getFirstName() + " " +  response.getAccountNumber());
-			    	 
-			    	holderAcc = response.getAccountNumber();
-			    	firstName = response.getFirstName();
+			    	
+			    	//login unsuccessfull
+			    	if (response.getLoginMessage().equals("Bank User not found")||response.getLoginMessage().equals("Password missmatch")) {
+			    		javax.swing.JOptionPane.showMessageDialog(BankifyPayGUIClient.this, response.getLoginMessage());
+			    	} else { //login completed
+			    		holderAcc = response.getAccountNumber();
+			    		firstName = response.getFirstName();
 
-					jLabel14.setText("Login Status: " + response.getLoginMessage() + " " + response.getFirstName() + " " +  response.getAccountNumber());
+			    		jLabel14.setText("Login Status: " + response.getLoginMessage() + " " + response.getFirstName() + " " +  response.getAccountNumber());
 					
-					
-					BankifyPayGUI2 bpgc2 = new BankifyPayGUI2(firstName, email, holderAcc, logger2, channel, blockingStub, asyncStub, bankServiceInfo);
-					bpgc2.setVisible(true);
-					bpgc.setVisible(false);
-					
+			    		//new BankifyPayGUI2 frame
+			    		BankifyPayGUI2 bpgc2 = new BankifyPayGUI2(firstName, email, holderAcc, logger2, channel, blockingStub, asyncStub, bankServiceInfo);
+			    		//change for next frame BankifyPayGUI2
+			    		bpgc2.setVisible(true);
+			    		bpgc.setVisible(false);
+			    	}
 				
 		    	} catch (StatusRuntimeException ex) {
 			    	logger2.log(Level.WARNING, "RPC failed: {0}", ex.getStatus());
@@ -291,12 +311,13 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 		//String host = "localhost";
 		//int port = 50053;
 
+    	//jmDNS discovery
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
 		String host;
 		int port; 
-		try {
+		try { //server found
 			host = bankServiceInfo.getHostAddresses()[0];
 			port = bankServiceInfo.getPort();
 		} catch (NullPointerException e){
@@ -306,11 +327,13 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 		
 		System.out.println(host+" "+port);
 		
+		//channel creating for service
 		channel = ManagedChannelBuilder.
 				forAddress(host, port)
 				.usePlaintext()
 				.build();
 
+		//gRPC service connection
 		blockingStub = BankPayGrpc.newBlockingStub(channel);
 		asyncStub = BankPayGrpc.newStub(channel);
 
@@ -348,6 +371,8 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
         });
     }
     
+	//method discoverBankifyService
+	//this method uses jmDNS to find service host and port
 	private static void discoverBankifyService(String service_type) {
 		
 		
@@ -356,13 +381,13 @@ public class BankifyPayGUIClient extends javax.swing.JFrame {
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 
 				
-			jmdns.addServiceListener(service_type, new ServiceListener() {
+			jmdns.addServiceListener(service_type, new ServiceListener() { //ServiceListener implementation
 				
 				@Override
 				public void serviceResolved(ServiceEvent event) {
 					System.out.println("Bankify Service resolved: " + event.getInfo());
 
-					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_pay");
+					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_pay"); //find service info
 
 					int port = bankServiceInfo.getPort();
 					

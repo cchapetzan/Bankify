@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * Message with all the necessary data for a new user
+ * </pre>
+ *
  * Protobuf type {@code bankify.NewUserData}
  */
 public  final class NewUserData extends
@@ -654,6 +658,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Message with all the necessary data for a new user
+   * </pre>
+   *
    * Protobuf type {@code bankify.NewUserData}
    */
   public static final class Builder extends

@@ -38,11 +38,14 @@ import io.grpc.StatusRuntimeException;
 import javax.swing.GroupLayout;
 
 /**
- *
- * @author Camila Chapetzan Antunes
- */
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyTransactionsGUIClient
+* - client-side GUI implementation of gRPC service BankifyTransactions
+*/
 public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
 	
+	//variables for gRPC and jmDNS
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankTransactionsBlockingStub blockingStub;
@@ -95,6 +98,9 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         
+        /*
+         * window closing action listener: chanel shutdown
+         */
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -167,8 +173,14 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(800, 400));
 
         jButton1.setText("Login to Bankify");
+        /*
+         * Login to Bankify button action: call a ConfirmDialog to fill e-mail and password
+         * - Validate all the fields and call gRPC method userLogin
+         * - if positive starts new JFrame BankifyTransactionsGUIActions
+         */
         jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Fields for the confirm dialog
 				javax.swing.JTextField emailB = new javax.swing.JTextField();
 				emailB.setText("");
 				javax.swing.JPasswordField passwordB = new javax.swing.JPasswordField();
@@ -179,27 +191,32 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
 				        new javax.swing.JLabel("Password"),
 				        passwordB
 				};
-				while(emailB.getText().equals("")||String.valueOf(passwordB.getPassword()).equals("")) {
+				while(emailB.getText().equals("")||String.valueOf(passwordB.getPassword()).equals("")) {//while fields are blank
+					//launch confirm dialog
 					int result = javax.swing.JOptionPane.showConfirmDialog(null, inputs, "Please, enter your login details", javax.swing.JOptionPane.PLAIN_MESSAGE);
-					if (result == javax.swing.JOptionPane.CLOSED_OPTION) break;
+					if (result == javax.swing.JOptionPane.CLOSED_OPTION) break; //close is click in the "X"
 					if (result == javax.swing.JOptionPane.OK_OPTION) {
+						//validate fields
 						if (!emailB.getText().equals("")&&!String.valueOf(passwordB.getPassword()).equals("")) {
+							//gRPC userLogin call
 							LoginData request = LoginData.newBuilder().setEmail(emailB.getText()).setPassword(String.valueOf(passwordB.getPassword())).build();
 							LoginReply response = blockingStub.userLogin(request);
-							if(response.getLoginMessage().equals("Bank User not found")) {
+							if(response.getLoginMessage().equals("Bank User not found")) { //warning dialog
 								javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIClient.this, "Bank User not found");						
 							}
-							else if(response.getLoginMessage().equals("Password missmatch")) {
+							else if(response.getLoginMessage().equals("Password missmatch")) { //warning dialog
 								javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIClient.this, "Password missmatch");
 							}
-							else {
+							else { //confirmation dialog
 								javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIClient.this, response.getLoginMessage()+" Welcome back "+response.getFirstName()+".");
+								//new BankifyTransactionsGUIActions frame
 								BankifyTransactionsGUIActions btgAc = new BankifyTransactionsGUIActions(response.getFirstName(), response.getEmail(), response.getAccountNumber(), btgc, logger2, channel, blockingStub, asyncStub, bankServiceInfo);
+								//change for next frame BankifyTransactionsGUIActions
 								btgAc.setVisible(true);
 								btgc.setVisible(false);
 							}
 							break;
-						} else {
+						} else { //if fields are blank
 							javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIClient.this, "Fields cannot be blank");
 						}
 					
@@ -210,10 +227,14 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
 		});
 
         jButton2.setText("Create your account");
+        /*
+         * Create your account button action: starts new JFrame BankifyTransactionsGUIAdd for user adding
+         */
         jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				//new BankifyTransactionsGUIAdd frame
 				BankifyTransactionsGUIAdd btgAdd = new BankifyTransactionsGUIAdd(btgc, logger2, channel, blockingStub, asyncStub, bankServiceInfo);
+				//change for next frame BankifyTransactionsGUIAdd
 				btgAdd.setVisible(true);
 				btgc.setVisible(false);
 
@@ -274,12 +295,13 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
 		//String host = "localhost";
 		//int port = 50053;
 
+    	//jmDNS discovery
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
 		String host;
 		int port; 
-		try {
+		try { //server found
 			host = bankServiceInfo.getHostAddresses()[0];
 			port = bankServiceInfo.getPort();
 		} catch (NullPointerException e){
@@ -289,11 +311,13 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
 		
 		System.out.println(host+" "+port);
 		
+		//channel creating for service
 		channel = ManagedChannelBuilder.
 				forAddress(host, port)
 				.usePlaintext()
 				.build();
 
+		//gRPC service connection
 		blockingStub = BankTransactionsGrpc.newBlockingStub(channel);
 		asyncStub = BankTransactionsGrpc.newStub(channel);
 
@@ -334,65 +358,67 @@ public class BankifyTransactionsGUIClient extends javax.swing.JFrame {
         });
     }
     
-	private static void discoverBankifyService(String service_type) {
-		
-		
-		try {
-			// Create a JmDNS instance
-			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
+  //method discoverBankifyService
+  	//this method uses jmDNS to find service host and port
+  	private static void discoverBankifyService(String service_type) {
+  		
+  		
+  		try {
+  			// Create a JmDNS instance
+  			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 
-				
-			jmdns.addServiceListener(service_type, new ServiceListener() {
-				
-				@Override
-				public void serviceResolved(ServiceEvent event) {
-					System.out.println("Bankify Service resolved: " + event.getInfo());
+  				
+  			jmdns.addServiceListener(service_type, new ServiceListener() { //ServiceListener implementation
+  				
+  				@Override
+  				public void serviceResolved(ServiceEvent event) {
+  					System.out.println("Bankify Service resolved: " + event.getInfo());
 
-					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_transactions");
+  					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_transactions"); //find service info
 
-					int port = bankServiceInfo.getPort();
-					
-					System.out.println("resolving " + service_type + " with properties ...");
-					System.out.println("\t port: " + port);
-					System.out.println("\t type:"+ event.getType());
-					System.out.println("\t name: " + event.getName());
-					System.out.println("\t description/properties: " + bankServiceInfo.getNiceTextString());
-					System.out.println("\t host: " + bankServiceInfo.getHostAddresses()[0]);
-				
-					
-				}
-				
-				@Override
-				public void serviceRemoved(ServiceEvent event) {
-					System.out.println("Bank Service removed: " + event.getInfo());
+  					int port = bankServiceInfo.getPort();
+  					
+  					System.out.println("resolving " + service_type + " with properties ...");
+  					System.out.println("\t port: " + port);
+  					System.out.println("\t type:"+ event.getType());
+  					System.out.println("\t name: " + event.getName());
+  					System.out.println("\t description/properties: " + bankServiceInfo.getNiceTextString());
+  					System.out.println("\t host: " + bankServiceInfo.getHostAddresses()[0]);
+  				
+  					
+  				}
+  				
+  				@Override
+  				public void serviceRemoved(ServiceEvent event) {
+  					System.out.println("Bank Service removed: " + event.getInfo());
 
-					
-				}
-				
-				@Override
-				public void serviceAdded(ServiceEvent event) {
-					System.out.println("Bank Service added: " + event.getInfo());
+  					
+  				}
+  				
+  				@Override
+  				public void serviceAdded(ServiceEvent event) {
+  					System.out.println("Bank Service added: " + event.getInfo());
 
-					
-				}
-			});
-			
-			// Wait a bit
-			Thread.sleep(2000);
-			
-			jmdns.close();
+  					
+  				}
+  			});
+  			
+  			// Wait a bit
+  			Thread.sleep(2000);
+  			
+  			jmdns.close();
 
-		} catch (UnknownHostException e) {
-			System.out.println(e.getMessage());
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
+  		} catch (UnknownHostException e) {
+  			System.out.println(e.getMessage());
+  		} catch (IOException e) {
+  			System.out.println(e.getMessage());
+  		} catch (InterruptedException e) {
+  			// TODO Auto-generated catch block
+  			e.printStackTrace();
+  		}
+  		
+  		
+  	}
 	
     // Variables declaration - do not modify
     private BufferedImage background;

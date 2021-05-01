@@ -25,11 +25,14 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
 /**
- *
- * @author Camila Chapetzan Antunes
- */
+*
+* @author Camila Chapetzan Antunes
+* Class BankifySocialGUIClient
+* - client-side GUI implementation of gRPC service BankifySocial
+*/
 public class BankifySocialGUIClient extends javax.swing.JFrame {
 	
+	//variables for gRPC and jmDNS
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankSocialBlockingStub blockingStub;
@@ -65,7 +68,7 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField4 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        jTextField9 = new javax.swing.JPasswordField();
         jCheckBox1 = new javax.swing.JCheckBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -75,7 +78,7 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        jTextField11 = new javax.swing.JPasswordField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
@@ -95,6 +98,9 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
+        /*
+         * window closing action listener: chanel shutdown
+         */
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -171,12 +177,15 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 
         jTextField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "F" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "F", "M" }));
 
         jCheckBox1.setBackground(new java.awt.Color(255, 255, 255));
         jCheckBox1.setText("I accept the Terms and Conditions");
 
         jButton1.setText("Reset");
+        /*
+         * Reset button action: clear all fields
+         */
         jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jTextField1.setText("");
@@ -196,6 +205,9 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 		});
 
         jButton2.setText("Send");
+        /*
+         * Send button action: Validate all the fields and call gRPC method addSocialUser
+         */
         jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -204,10 +216,11 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 	    		id = jTextField3.getText();//"US123";
 	    		gender = jComboBox1.getSelectedItem().toString();//"F";
 	    		email = jTextField4.getText();//"britney@spears.com";
-	    		password = jTextField9.getText();//"321654";
+	    		password = String.valueOf(jTextField9.getPassword());//"321654";
 	    		phone = jTextField5.getText();//"083-1234567";
 	    		address = jTextField6.getText()+" "+jTextField7.getText()+" "+jTextField8.getText();//"Dublin street";
 	    		
+	    		//fields validation
 	    		if(firstName.equals("")||lastName.equals("")||id.equals("")||email.equals("")||password.equals("")||phone.equals("")||address.equals("  ")) {
 	    			if(firstName.equals("")) jLabel14.setText("Please fill your First Name.");
 	    			if(lastName.equals("")) jLabel14.setText("Please fill your Last Name.");
@@ -218,7 +231,7 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 	    			if(address.equals("  ")) jLabel14.setText("Please fill your address.");
 	    			return;
 	    		}
-	    		if (!password.equals(jTextField11.getText())) {
+	    		if (!password.equals(String.valueOf(jTextField11.getPassword()))) {
 	    			jLabel14.setText("Password is not the same as Retype Password");
 	    			return;
 	    		}
@@ -232,12 +245,13 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 	    			return;
 	    		}
 				
+	    		//gRPC method addSocialUser calling
 		    	try {
-		    	
+		    		//request
 		    		NewSocialUserData request = NewSocialUserData.newBuilder().setFirstName(firstName).setLastName(lastName).setId(id).setGender(gender).setEmail(email).setPassword(password).setPhone(phone).setAddress(address).build();
-
+		    		//method
 		    		BankReply response = blockingStub.addSocialUser(request);
-
+		    		//response
 					jLabel14.setText("User " + response.getMessage() + " was added to our Social List.");
 				
 					logger2.info("Added User: " + response.getMessage());
@@ -420,12 +434,13 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
     	//String host = "localhost";
 		//int port = 50052;
 		
+    	//jmDNS discovery
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
 		String host;
 		int port; 
-		try {
+		try { //server found
 			host = bankServiceInfo.getHostAddresses()[0];
 			port = bankServiceInfo.getPort();
 		} catch (NullPointerException e){
@@ -435,11 +450,13 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 		
 		System.out.println(host+" "+port);
 
+		//channel creating for service
 		channel = ManagedChannelBuilder.
 				forAddress(host, port)
 				.usePlaintext()
 				.build();
 
+		//gRPC service connection
 		blockingStub = BankSocialGrpc.newBlockingStub(channel);
 
 		BankifySocialClient client = new BankifySocialClient();
@@ -474,31 +491,10 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
             }
         });
         
-	    /*try {
-	    	 //String name = "Adding User: ";
-	    	 String firstName = "Britney Social";
-	    	 String lastName = "Spears";
-	    	 String id = "US123";
-	    	 String gender = "F";
-	    	 String email = "britney@spears.com";
-	    	 String password = "321654";
-	    	 String phone = "083-1234567";
-	    	 String address = "Dublin street";
-	    	 NewSocialUserData request = NewSocialUserData.newBuilder().setFirstName(firstName).setLastName(lastName).setId(id).setGender(gender).setEmail(email).setPassword(password).setPhone(phone).setAddress(address).build();
-
-	    	 BankReply response = blockingStub.addSocialUser(request);
-
-	    	 logger2.info("Added User: " + response.getMessage());
-
-	    } catch (StatusRuntimeException e) {
-		    logger2.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
-
-		    return;
-
-	    }*/
-	    //channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
     }
     
+	//method discoverBankifyService
+	//this method uses jmDNS to find service host and port
 	private static void discoverBankifyService(String service_type) {
 		
 		
@@ -507,13 +503,13 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 
 				
-			jmdns.addServiceListener(service_type, new ServiceListener() {
+			jmdns.addServiceListener(service_type, new ServiceListener() { //ServiceListener implementation
 				
 				@Override
 				public void serviceResolved(ServiceEvent event) {
 					System.out.println("Bankify Service resolved: " + event.getInfo());
 
-					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_social");
+					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_social"); //find service info
 
 					int port = bankServiceInfo.getPort();
 					
@@ -555,10 +551,9 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 
+	//BankifySocial data
 	 private String firstName;
 	 private String lastName;
 	 private String id;
@@ -589,7 +584,7 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField11;
+    private javax.swing.JPasswordField jTextField11;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -597,6 +592,6 @@ public class BankifySocialGUIClient extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JPasswordField jTextField9;
     // End of variables declaration//GEN-END:variables
 }

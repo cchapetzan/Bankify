@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * Actual balance and message GetBalance &amp; TransferBalance
+ * </pre>
+ *
  * Protobuf type {@code bankify.FloatReply}
  */
 public  final class FloatReply extends
@@ -300,6 +304,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Actual balance and message GetBalance &amp; TransferBalance
+   * </pre>
+   *
    * Protobuf type {@code bankify.FloatReply}
    */
   public static final class Builder extends

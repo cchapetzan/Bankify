@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * Account and pin for AccountMovement, GetBalance
+ * </pre>
+ *
  * Protobuf type {@code bankify.AccountData}
  */
 public  final class AccountData extends
@@ -272,6 +276,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Account and pin for AccountMovement, GetBalance
+   * </pre>
+   *
    * Protobuf type {@code bankify.AccountData}
    */
   public static final class Builder extends

@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * movement string return for AccountMovement
+ * </pre>
+ *
  * Protobuf type {@code bankify.MovementData}
  */
 public  final class MovementData extends
@@ -271,6 +275,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * movement string return for AccountMovement
+   * </pre>
+   *
    * Protobuf type {@code bankify.MovementData}
    */
   public static final class Builder extends

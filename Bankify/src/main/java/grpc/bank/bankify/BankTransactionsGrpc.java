@@ -16,6 +16,9 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
+ * <pre>
+ *Service for Bankify user transactions
+ * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.15.0)",
@@ -27,38 +30,6 @@ public final class BankTransactionsGrpc {
   public static final String SERVICE_NAME = "bankify.BankTransactions";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<grpc.bank.bankify.BankRequest,
-      grpc.bank.bankify.BankReply> getSendDataMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "SendData",
-      requestType = grpc.bank.bankify.BankRequest.class,
-      responseType = grpc.bank.bankify.BankReply.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<grpc.bank.bankify.BankRequest,
-      grpc.bank.bankify.BankReply> getSendDataMethod() {
-    io.grpc.MethodDescriptor<grpc.bank.bankify.BankRequest, grpc.bank.bankify.BankReply> getSendDataMethod;
-    if ((getSendDataMethod = BankTransactionsGrpc.getSendDataMethod) == null) {
-      synchronized (BankTransactionsGrpc.class) {
-        if ((getSendDataMethod = BankTransactionsGrpc.getSendDataMethod) == null) {
-          BankTransactionsGrpc.getSendDataMethod = getSendDataMethod = 
-              io.grpc.MethodDescriptor.<grpc.bank.bankify.BankRequest, grpc.bank.bankify.BankReply>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(
-                  "bankify.BankTransactions", "SendData"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.bank.bankify.BankRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.bank.bankify.BankReply.getDefaultInstance()))
-                  .setSchemaDescriptor(new BankTransactionsMethodDescriptorSupplier("SendData"))
-                  .build();
-          }
-        }
-     }
-     return getSendDataMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<grpc.bank.bankify.NewUserData,
       grpc.bank.bankify.BankReply> getAddUserMethod;
 
@@ -155,28 +126,28 @@ public final class BankTransactionsGrpc {
      return getUserLogoutMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<grpc.bank.bankify.LoginData,
+  private static volatile io.grpc.MethodDescriptor<grpc.bank.bankify.AccountData,
       grpc.bank.bankify.MovementData> getAccountMovementMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "AccountMovement",
-      requestType = grpc.bank.bankify.LoginData.class,
+      requestType = grpc.bank.bankify.AccountData.class,
       responseType = grpc.bank.bankify.MovementData.class,
       methodType = io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
-  public static io.grpc.MethodDescriptor<grpc.bank.bankify.LoginData,
+  public static io.grpc.MethodDescriptor<grpc.bank.bankify.AccountData,
       grpc.bank.bankify.MovementData> getAccountMovementMethod() {
-    io.grpc.MethodDescriptor<grpc.bank.bankify.LoginData, grpc.bank.bankify.MovementData> getAccountMovementMethod;
+    io.grpc.MethodDescriptor<grpc.bank.bankify.AccountData, grpc.bank.bankify.MovementData> getAccountMovementMethod;
     if ((getAccountMovementMethod = BankTransactionsGrpc.getAccountMovementMethod) == null) {
       synchronized (BankTransactionsGrpc.class) {
         if ((getAccountMovementMethod = BankTransactionsGrpc.getAccountMovementMethod) == null) {
           BankTransactionsGrpc.getAccountMovementMethod = getAccountMovementMethod = 
-              io.grpc.MethodDescriptor.<grpc.bank.bankify.LoginData, grpc.bank.bankify.MovementData>newBuilder()
+              io.grpc.MethodDescriptor.<grpc.bank.bankify.AccountData, grpc.bank.bankify.MovementData>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.SERVER_STREAMING)
               .setFullMethodName(generateFullMethodName(
                   "bankify.BankTransactions", "AccountMovement"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.bank.bankify.LoginData.getDefaultInstance()))
+                  grpc.bank.bankify.AccountData.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   grpc.bank.bankify.MovementData.getDefaultInstance()))
                   .setSchemaDescriptor(new BankTransactionsMethodDescriptorSupplier("AccountMovement"))
@@ -275,15 +246,11 @@ public final class BankTransactionsGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify user transactions
+   * </pre>
    */
   public static abstract class BankTransactionsImplBase implements io.grpc.BindableService {
-
-    /**
-     */
-    public void sendData(grpc.bank.bankify.BankRequest request,
-        io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply> responseObserver) {
-      asyncUnimplementedUnaryCall(getSendDataMethod(), responseObserver);
-    }
 
     /**
      */
@@ -308,7 +275,7 @@ public final class BankTransactionsGrpc {
 
     /**
      */
-    public void accountMovement(grpc.bank.bankify.LoginData request,
+    public void accountMovement(grpc.bank.bankify.AccountData request,
         io.grpc.stub.StreamObserver<grpc.bank.bankify.MovementData> responseObserver) {
       asyncUnimplementedUnaryCall(getAccountMovementMethod(), responseObserver);
     }
@@ -329,13 +296,6 @@ public final class BankTransactionsGrpc {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getSendDataMethod(),
-            asyncUnaryCall(
-              new MethodHandlers<
-                grpc.bank.bankify.BankRequest,
-                grpc.bank.bankify.BankReply>(
-                  this, METHODID_SEND_DATA)))
           .addMethod(
             getAddUserMethod(),
             asyncUnaryCall(
@@ -361,7 +321,7 @@ public final class BankTransactionsGrpc {
             getAccountMovementMethod(),
             asyncServerStreamingCall(
               new MethodHandlers<
-                grpc.bank.bankify.LoginData,
+                grpc.bank.bankify.AccountData,
                 grpc.bank.bankify.MovementData>(
                   this, METHODID_ACCOUNT_MOVEMENT)))
           .addMethod(
@@ -383,6 +343,9 @@ public final class BankTransactionsGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify user transactions
+   * </pre>
    */
   public static final class BankTransactionsStub extends io.grpc.stub.AbstractStub<BankTransactionsStub> {
     private BankTransactionsStub(io.grpc.Channel channel) {
@@ -398,14 +361,6 @@ public final class BankTransactionsGrpc {
     protected BankTransactionsStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       return new BankTransactionsStub(channel, callOptions);
-    }
-
-    /**
-     */
-    public void sendData(grpc.bank.bankify.BankRequest request,
-        io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getSendDataMethod(), getCallOptions()), request, responseObserver);
     }
 
     /**
@@ -434,7 +389,7 @@ public final class BankTransactionsGrpc {
 
     /**
      */
-    public void accountMovement(grpc.bank.bankify.LoginData request,
+    public void accountMovement(grpc.bank.bankify.AccountData request,
         io.grpc.stub.StreamObserver<grpc.bank.bankify.MovementData> responseObserver) {
       asyncServerStreamingCall(
           getChannel().newCall(getAccountMovementMethod(), getCallOptions()), request, responseObserver);
@@ -458,6 +413,9 @@ public final class BankTransactionsGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify user transactions
+   * </pre>
    */
   public static final class BankTransactionsBlockingStub extends io.grpc.stub.AbstractStub<BankTransactionsBlockingStub> {
     private BankTransactionsBlockingStub(io.grpc.Channel channel) {
@@ -473,13 +431,6 @@ public final class BankTransactionsGrpc {
     protected BankTransactionsBlockingStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       return new BankTransactionsBlockingStub(channel, callOptions);
-    }
-
-    /**
-     */
-    public grpc.bank.bankify.BankReply sendData(grpc.bank.bankify.BankRequest request) {
-      return blockingUnaryCall(
-          getChannel(), getSendDataMethod(), getCallOptions(), request);
     }
 
     /**
@@ -506,7 +457,7 @@ public final class BankTransactionsGrpc {
     /**
      */
     public java.util.Iterator<grpc.bank.bankify.MovementData> accountMovement(
-        grpc.bank.bankify.LoginData request) {
+        grpc.bank.bankify.AccountData request) {
       return blockingServerStreamingCall(
           getChannel(), getAccountMovementMethod(), getCallOptions(), request);
     }
@@ -527,6 +478,9 @@ public final class BankTransactionsGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify user transactions
+   * </pre>
    */
   public static final class BankTransactionsFutureStub extends io.grpc.stub.AbstractStub<BankTransactionsFutureStub> {
     private BankTransactionsFutureStub(io.grpc.Channel channel) {
@@ -542,14 +496,6 @@ public final class BankTransactionsGrpc {
     protected BankTransactionsFutureStub build(io.grpc.Channel channel,
         io.grpc.CallOptions callOptions) {
       return new BankTransactionsFutureStub(channel, callOptions);
-    }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<grpc.bank.bankify.BankReply> sendData(
-        grpc.bank.bankify.BankRequest request) {
-      return futureUnaryCall(
-          getChannel().newCall(getSendDataMethod(), getCallOptions()), request);
     }
 
     /**
@@ -593,13 +539,12 @@ public final class BankTransactionsGrpc {
     }
   }
 
-  private static final int METHODID_SEND_DATA = 0;
-  private static final int METHODID_ADD_USER = 1;
-  private static final int METHODID_USER_LOGIN = 2;
-  private static final int METHODID_USER_LOGOUT = 3;
-  private static final int METHODID_ACCOUNT_MOVEMENT = 4;
-  private static final int METHODID_GET_BALANCE = 5;
-  private static final int METHODID_TRANSFER_BALANCE = 6;
+  private static final int METHODID_ADD_USER = 0;
+  private static final int METHODID_USER_LOGIN = 1;
+  private static final int METHODID_USER_LOGOUT = 2;
+  private static final int METHODID_ACCOUNT_MOVEMENT = 3;
+  private static final int METHODID_GET_BALANCE = 4;
+  private static final int METHODID_TRANSFER_BALANCE = 5;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -618,10 +563,6 @@ public final class BankTransactionsGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_SEND_DATA:
-          serviceImpl.sendData((grpc.bank.bankify.BankRequest) request,
-              (io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply>) responseObserver);
-          break;
         case METHODID_ADD_USER:
           serviceImpl.addUser((grpc.bank.bankify.NewUserData) request,
               (io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply>) responseObserver);
@@ -635,7 +576,7 @@ public final class BankTransactionsGrpc {
               (io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply>) responseObserver);
           break;
         case METHODID_ACCOUNT_MOVEMENT:
-          serviceImpl.accountMovement((grpc.bank.bankify.LoginData) request,
+          serviceImpl.accountMovement((grpc.bank.bankify.AccountData) request,
               (io.grpc.stub.StreamObserver<grpc.bank.bankify.MovementData>) responseObserver);
           break;
         case METHODID_GET_BALANCE:
@@ -707,7 +648,6 @@ public final class BankTransactionsGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new BankTransactionsFileDescriptorSupplier())
-              .addMethod(getSendDataMethod())
               .addMethod(getAddUserMethod())
               .addMethod(getUserLoginMethod())
               .addMethod(getUserLogoutMethod())

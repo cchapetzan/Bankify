@@ -22,11 +22,15 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 
 /**
- *
- * @author Camila Chapetzan Antunes
- */
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyPayGUI2
+* - client-side GUI implementation of gRPC service BankifyPay
+* - Frame that controls pay, logout and history transfer
+*/
 public class BankifyPayGUI2 extends javax.swing.JFrame {
 	
+	//variables for gRPC and jmDNS
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankPayBlockingStub blockingStub;
@@ -37,10 +41,12 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
 
 	private static Logger logger2;
 	
+	//local payment history storage
 	private ArrayList<PaymentTransaction> paymentHistory;
 
     /**
-     * Creates new form BankifySocialGUIClient
+     * Creates new form BankifyPayGUI2
+     * special constructor for receiving data from BankifyPayGUIClient
      */
     public BankifyPayGUI2(String firstName, String email, int holderAcc, Logger logger2, ManagedChannel channel, BankPayBlockingStub blockingStub, BankPayStub asyncStub, ServiceInfo bankServiceInfo) {
     	this.firstName = firstName;
@@ -91,24 +97,30 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         
+        /*
+         * window closing action listener: history transfer and chanel shutdown
+         */
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
             		try {
             			
+            			//Service calling: payHistoryRegister (via payTrans method)
             			ArrayList<String> resp = BankifyPayGUI2.this.payTrans(paymentHistory, asyncStub);
-            			Thread.sleep(6000);
-            			if (resp.isEmpty()||resp.get(0).equals("Payments History error")) {
+            			Thread.sleep(6000); //thread sleep to wait for the asyncStub to get all the streaming
+            			if (resp.isEmpty()||resp.get(0).equals("Payments History error")) { //if history transfer error
             				logger2.info("Pay History Transfer error");
    			    			javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, "Pay History Transfer error");
-            			} else {
+            			} else { //succeeded - logout and channel shotdown
             				logger2.info("Pay History Transfer Succeeded, Bankify Pay will close");
    			    			javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, "Pay History Transfer Succeeded, Bankify Pay will close");
-            				LogoutData request3 = LogoutData.newBuilder().setEmail(email).build();
+            				//userLogout method
+   			    			LogoutData request3 = LogoutData.newBuilder().setEmail(email).build();
                   	    	 
                	    	 	BankReply response3 = blockingStub.userLogout(request3);
                	    	 	
                	    	 	logger2.info("Logout Status: " + response3.getMessage());
+               	    	 	//channel shutdown
     						channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
             			}
            	    	 
@@ -190,6 +202,9 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
         jTextField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jButton1.setText("Reset");
+        /*
+         * Reset button action: clear all fields
+         */
         jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jTextField1.setText("");
@@ -200,13 +215,18 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
 		});
 
         jButton2.setText("Pay");
+        /*
+         * Pay button action: Validate all the fields and call gRPC method pay
+         * if successfull save the payment action history locally 
+         */
         jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
+				//fields validation	  
 	    		if(jTextField1.getText().equals("")||jPasswordField1.getPassword().equals("")||jTextField3.getText().equals("")) {
 	    			if(jTextField1.getText().equals("")) jLabel14.setText("<HTML>Please fill your card.<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
 	    			if(!String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) jLabel14.setText("<HTML>Please fill your pin correctly (4 digit number).<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
-	    			if(jTextField3.getText().equals("")) jLabel14.setText("<HTML>Please fill your value.<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
+	    			if(!jTextField3.getText().matches("[0-9]+")) jLabel14.setText("<HTML>Value must be a exact number<br>" + "Welcome back Mister " + firstName + " " + email + "</HTML>");
 	    			return;
 	    		}
 	    		
@@ -214,19 +234,20 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
 	    		pin = Integer.parseInt(String.valueOf(jPasswordField1.getPassword()));//"123";
 	    		value = Float.parseFloat(jTextField3.getText());
 				
+	    		//gRPC method pay calling
 		    	try {
 		    	
 		    		PayRequest request2 = PayRequest.newBuilder().setCardNumber(cardNumber).setPin(pin).setHolderAcc(holderAcc).setValue(value).build();
 			    	 
 			    	PayReply response2 = blockingStub.pay(request2);
 			    	
-			    	 if(response2.getValue() == -1) {
+			    	 if(response2.getValue() == -1) { //problems in payment
 			    		 logger2.info("Payment Status: " + response2.getDetails());
 			    		 javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, response2.getDetails());
-			    	 } else {
+			    	 } else { //payment completed - added in payment history
 			    		 logger2.info(response2.getDetails() + " " + response2.getDate() + " " + response2.getName() + " " + response2.getValue());
 			    		 javax.swing.JOptionPane.showMessageDialog(BankifyPayGUI2.this, response2.getDetails() + " on " + response2.getDate() + " by " + response2.getName() + ": " + response2.getValue());
-			    		 
+			    		 //added in payment history
 			    		 paymentHistory.add(new PaymentTransaction(cardNumber, holderAcc, response2.getDate(), response2.getValue()));
 			    		 
 			    	 }
@@ -361,50 +382,53 @@ public class BankifyPayGUI2 extends javax.swing.JFrame {
         });
     }
     
-    private ArrayList<String> payTrans(ArrayList<PaymentTransaction> list, BankPayStub asyncStub) throws InterruptedException, RuntimeException {
-    	ArrayList<String> resp = new ArrayList<>();
-    	if (list.isEmpty()){
-    		resp.add("Payments History transfered successfully");
-    		return resp;
-    	}
-    	final CountDownLatch finishLatch = new CountDownLatch(1);
-    	StreamObserver<PayHistory> requestObserver = asyncStub.withDeadlineAfter(5, TimeUnit.SECONDS)
-    			.payHistoryRegister(new StreamObserver<BankReply>() {
-    		@Override
-            public void onNext(BankReply response) {
-    			resp.add(response.getMessage());
-    		}
-    		@Override
-            public void onError(Throwable t) {
-                logger2.info(t.getMessage());
-                finishLatch.countDown();
-            }
+  //method payTrans
+  	//this method calls gRPC method payHistoryRegister to transfer via stream all payment history.
+      private static ArrayList<String> payTrans(ArrayList<PaymentTransaction> list, BankPayStub asyncStub) throws InterruptedException, RuntimeException {
+      	ArrayList<String> resp = new ArrayList<>(); //String saved in an array for easy implementation
+      	
+      	//A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.
+      	final CountDownLatch finishLatch = new CountDownLatch(1);  
+      	
+      	//gRPC payHistoryRegister called
+      	StreamObserver<PayHistory> requestObserver = asyncStub.withDeadlineAfter(5, TimeUnit.SECONDS)
+      			.payHistoryRegister(new StreamObserver<BankReply>() { //streamObserver implementation
+      		@Override
+              public void onNext(BankReply response) {
+      			resp.add(response.getMessage());
+      		}
+      		@Override
+              public void onError(Throwable t) {
+                  logger2.info(t.getMessage());
+                  finishLatch.countDown();
+              }
 
-            @Override
-            public void onCompleted() {
-            	finishLatch.countDown();             
-            }
-    	});
-    	
-    	try {
-    		for (int i = 0; i < list.size(); i++) {
-    			PaymentTransaction temp = list.get(i);
-    			PayHistory req = PayHistory.newBuilder().setCardNumber(temp.getCardPay()).setHolderAcc(temp.getToAccount()).setDate(temp.getDate()).setValue(temp.getValue()).build();
-    			requestObserver.onNext(req);
-    		}
-    		
-    	} catch (RuntimeException e) {
-            // Cancel RPC
-            requestObserver.onError(e);
-            return resp;
-        }
-    	requestObserver.onCompleted();
-    	if (!finishLatch.await(5, TimeUnit.SECONDS)) {
-            logger2.warning("request cannot finish within 1 minute");
-        }
-    	return resp;
+              @Override
+              public void onCompleted() {
+              	finishLatch.countDown();             
+              }
+      	});
+      	
+      	try { //transfering all transactions for requestObserver
+      		for (int i = 0; i < list.size(); i++) {
+      			PaymentTransaction temp = list.get(i);
+      			PayHistory req = PayHistory.newBuilder().setCardNumber(temp.getCardPay()).setHolderAcc(temp.getToAccount()).setDate(temp.getDate()).setValue(temp.getValue()).build();
+      			requestObserver.onNext(req);
+      		}
+      		
+      	} catch (RuntimeException e) {
+              // Cancel RPC
+              requestObserver.onError(e);
+              return resp;
+          }
+      	requestObserver.onCompleted();
+      	if (!finishLatch.await(5, TimeUnit.SECONDS)) {
+              logger2.warning("request cannot finish within 1 minute");
+          }
+      	return resp;
     }
     
+    //BankifyPay data
 	private static String firstName;
     private static String email;
 	private static int holderAcc;

@@ -1,6 +1,5 @@
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\LoginPayReply.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayRequest.java
-C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankRequest.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankTransactionsGrpc.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyTransactionsGUIActions.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayRequestOrBuilder.java
@@ -30,7 +29,6 @@ C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\NewSoci
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyPayClient.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifyTransactionsServer.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankifySocialClient.java
-C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankRequestOrBuilder.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\PayReplyOrBuilder.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\BankAccount.java
 C:\Users\camil\eclipse-workspace\Bankify\src\main\java\grpc\bank\bankify\LoginReply.java

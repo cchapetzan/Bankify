@@ -5,7 +5,7 @@ package grpc.bank.bankify;
 
 /**
  * <pre>
- * The response message containing the greetings
+ * The basic answer message from bankify
  * </pre>
  *
  * Protobuf type {@code bankify.BankReply}
@@ -276,7 +276,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * The response message containing the greetings
+   * The basic answer message from bankify
    * </pre>
    *
    * Protobuf type {@code bankify.BankReply}

@@ -22,11 +22,15 @@ import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
- *
- * @author Camila Chapetzan Antunes
- */
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyTransactionsGUIAdd
+* - client-side GUI implementation of gRPC service BankifyTransactions
+* - Frame that add a new user via gRPC
+*/
 public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
 	
+	//variables for gRPC and jmDNS
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankTransactionsBlockingStub blockingStub;
@@ -40,7 +44,8 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
 	private static BankifyTransactionsGUIClient parent;
 
     /**
-     * Creates new form BankifySocialGUIClient
+     * Creates new form BankifyTransactionsGUIAdd
+     * special constructor for receiving data from BankifyTransactionsGUIClient
      */
     public BankifyTransactionsGUIAdd(BankifyTransactionsGUIClient parent, Logger logger2, ManagedChannel channel, BankTransactionsBlockingStub blockingStub2, BankTransactionsStub asyncStub2, ServiceInfo bankServiceInfo) {
     	this.logger2 = logger2;
@@ -48,7 +53,7 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
     	this.blockingStub = blockingStub2;
     	this.asyncStub = asyncStub2;
     	this.bankServiceInfo = bankServiceInfo;
-    	this.parent = parent;
+    	this.parent = parent; //parent frame for returning if needed
         initComponents();
     }
 
@@ -106,11 +111,16 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         
+        /*
+         * window closing action listener: returning to BankifyTransactionsGUIClient frame
+         */
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            	//returning to previous screen
             	BankifyTransactionsGUIAdd.this.setVisible(false);
             	parent.setVisible(true);
+            	//JFrame dispose
             	BankifyTransactionsGUIAdd.this.dispose();
             }
         });
@@ -185,6 +195,9 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
         jCheckBox1.setText("I accept the Terms and Conditions");
 
         jButton1.setText("Reset");
+        /*
+         * Reset button action: clear all fields
+         */
         jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jTextField1.setText("");
@@ -207,6 +220,10 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
 
         jButton2.setText("Send");
         
+        /*
+         * Send button action: Validate all the fields and call gRPC method addUser
+         * - if successfull returns to BankifyTransactionsGUIClient frame
+         */
         jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -215,11 +232,12 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
 	    		id = jTextField3.getText();//"US123";
 	    		gender = jComboBox1.getSelectedItem().toString();//"F";
 	    		email = jTextField4.getText();//"britney@spears.com";
-	    		password = String.valueOf(jPasswordField3.getPassword());;//"321654";
+	    		password = String.valueOf(jPasswordField3.getPassword());;//"32165444";
 	    		if(String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) pin = Integer.valueOf(String.valueOf(jPasswordField1.getPassword()));
 	    		phone = jTextField5.getText();//"083-1234567";
 	    		address = jTextField6.getText()+" "+jTextField7.getText()+" "+jTextField8.getText();//"Dublin street";
 	    		
+	    		//fields validation
 	    		if(firstName.equals("")||lastName.equals("")||id.equals("")||email.equals("")||password.equals("")||phone.equals("")||address.equals("  ")||pin==0) {
 	    			if(firstName.equals("")) jLabel14.setText("Please fill your First Name.");
 	    			if(lastName.equals("")) jLabel14.setText("Please fill your Last Name.");
@@ -255,6 +273,7 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
 	    			return;
 	    		}
 				
+	    		//gRPC method addUser calling
 		    	try {
 		    	
 		    		NewUserData request = NewUserData.newBuilder().setFirstName(firstName).setLastName(lastName).setId(id).setGender(gender).setEmail(email).setPassword(password).setPin(pin).setPhone(phone).setAddress(address).build();
@@ -279,8 +298,11 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
 		    		jPasswordField4.setText("");
 		    		jCheckBox1.setSelected(false);
 		    		jLabel14.setText("Don't Forget to fill all the requested data.");
+		    		
+		    		//returning to previous screen
 	            	BankifyTransactionsGUIAdd.this.setVisible(false);
 	            	parent.setVisible(true);
+	            	//JFrame dispose
 	            	BankifyTransactionsGUIAdd.this.dispose();	    				    		
 				
 		    	} catch (StatusRuntimeException ex) {
@@ -489,6 +511,7 @@ public class BankifyTransactionsGUIAdd extends javax.swing.JFrame {
         });
     }
 
+    //BankifyTransactions data
 	 private String firstName;
 	 private String lastName;
 	 private String id;

@@ -16,6 +16,9 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
+ * <pre>
+ *Service for Bankify Social user list
+ * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.15.0)",
@@ -27,38 +30,6 @@ public final class BankSocialGrpc {
   public static final String SERVICE_NAME = "bankify.BankSocial";
 
   // Static method descriptors that strictly reflect the proto.
-  private static volatile io.grpc.MethodDescriptor<grpc.bank.bankify.BankRequest,
-      grpc.bank.bankify.BankReply> getSendDataMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "SendData",
-      requestType = grpc.bank.bankify.BankRequest.class,
-      responseType = grpc.bank.bankify.BankReply.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<grpc.bank.bankify.BankRequest,
-      grpc.bank.bankify.BankReply> getSendDataMethod() {
-    io.grpc.MethodDescriptor<grpc.bank.bankify.BankRequest, grpc.bank.bankify.BankReply> getSendDataMethod;
-    if ((getSendDataMethod = BankSocialGrpc.getSendDataMethod) == null) {
-      synchronized (BankSocialGrpc.class) {
-        if ((getSendDataMethod = BankSocialGrpc.getSendDataMethod) == null) {
-          BankSocialGrpc.getSendDataMethod = getSendDataMethod = 
-              io.grpc.MethodDescriptor.<grpc.bank.bankify.BankRequest, grpc.bank.bankify.BankReply>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(
-                  "bankify.BankSocial", "SendData"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.bank.bankify.BankRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.bank.bankify.BankReply.getDefaultInstance()))
-                  .setSchemaDescriptor(new BankSocialMethodDescriptorSupplier("SendData"))
-                  .build();
-          }
-        }
-     }
-     return getSendDataMethod;
-  }
-
   private static volatile io.grpc.MethodDescriptor<grpc.bank.bankify.NewSocialUserData,
       grpc.bank.bankify.BankReply> getAddSocialUserMethod;
 
@@ -115,15 +86,11 @@ public final class BankSocialGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify Social user list
+   * </pre>
    */
   public static abstract class BankSocialImplBase implements io.grpc.BindableService {
-
-    /**
-     */
-    public void sendData(grpc.bank.bankify.BankRequest request,
-        io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply> responseObserver) {
-      asyncUnimplementedUnaryCall(getSendDataMethod(), responseObserver);
-    }
 
     /**
      */
@@ -134,13 +101,6 @@ public final class BankSocialGrpc {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getSendDataMethod(),
-            asyncUnaryCall(
-              new MethodHandlers<
-                grpc.bank.bankify.BankRequest,
-                grpc.bank.bankify.BankReply>(
-                  this, METHODID_SEND_DATA)))
           .addMethod(
             getAddSocialUserMethod(),
             asyncUnaryCall(
@@ -153,6 +113,9 @@ public final class BankSocialGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify Social user list
+   * </pre>
    */
   public static final class BankSocialStub extends io.grpc.stub.AbstractStub<BankSocialStub> {
     private BankSocialStub(io.grpc.Channel channel) {
@@ -172,14 +135,6 @@ public final class BankSocialGrpc {
 
     /**
      */
-    public void sendData(grpc.bank.bankify.BankRequest request,
-        io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getSendDataMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
     public void addSocialUser(grpc.bank.bankify.NewSocialUserData request,
         io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply> responseObserver) {
       asyncUnaryCall(
@@ -188,6 +143,9 @@ public final class BankSocialGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify Social user list
+   * </pre>
    */
   public static final class BankSocialBlockingStub extends io.grpc.stub.AbstractStub<BankSocialBlockingStub> {
     private BankSocialBlockingStub(io.grpc.Channel channel) {
@@ -207,13 +165,6 @@ public final class BankSocialGrpc {
 
     /**
      */
-    public grpc.bank.bankify.BankReply sendData(grpc.bank.bankify.BankRequest request) {
-      return blockingUnaryCall(
-          getChannel(), getSendDataMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
     public grpc.bank.bankify.BankReply addSocialUser(grpc.bank.bankify.NewSocialUserData request) {
       return blockingUnaryCall(
           getChannel(), getAddSocialUserMethod(), getCallOptions(), request);
@@ -221,6 +172,9 @@ public final class BankSocialGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify Social user list
+   * </pre>
    */
   public static final class BankSocialFutureStub extends io.grpc.stub.AbstractStub<BankSocialFutureStub> {
     private BankSocialFutureStub(io.grpc.Channel channel) {
@@ -240,14 +194,6 @@ public final class BankSocialGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<grpc.bank.bankify.BankReply> sendData(
-        grpc.bank.bankify.BankRequest request) {
-      return futureUnaryCall(
-          getChannel().newCall(getSendDataMethod(), getCallOptions()), request);
-    }
-
-    /**
-     */
     public com.google.common.util.concurrent.ListenableFuture<grpc.bank.bankify.BankReply> addSocialUser(
         grpc.bank.bankify.NewSocialUserData request) {
       return futureUnaryCall(
@@ -255,8 +201,7 @@ public final class BankSocialGrpc {
     }
   }
 
-  private static final int METHODID_SEND_DATA = 0;
-  private static final int METHODID_ADD_SOCIAL_USER = 1;
+  private static final int METHODID_ADD_SOCIAL_USER = 0;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -275,10 +220,6 @@ public final class BankSocialGrpc {
     @java.lang.SuppressWarnings("unchecked")
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
-        case METHODID_SEND_DATA:
-          serviceImpl.sendData((grpc.bank.bankify.BankRequest) request,
-              (io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply>) responseObserver);
-          break;
         case METHODID_ADD_SOCIAL_USER:
           serviceImpl.addSocialUser((grpc.bank.bankify.NewSocialUserData) request,
               (io.grpc.stub.StreamObserver<grpc.bank.bankify.BankReply>) responseObserver);
@@ -344,7 +285,6 @@ public final class BankSocialGrpc {
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new BankSocialFileDescriptorSupplier())
-              .addMethod(getSendDataMethod())
               .addMethod(getAddSocialUserMethod())
               .build();
         }

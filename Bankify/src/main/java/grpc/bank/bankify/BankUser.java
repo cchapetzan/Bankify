@@ -8,6 +8,8 @@ package grpc.bank.bankify;
 /**
  *
  * @author Camila Chapetzan Antunes
+ * Class BankUser
+ * - object with all the data and basic methods for a bank user and social list user
  */
 public class BankUser {
     BankAccount account;
@@ -21,6 +23,7 @@ public class BankUser {
     private String address;
     private boolean logged;
 
+    //constructor
     public BankUser(String firstName, String lastName, String idCard, char sex, String email, String password, String phone, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,11 +37,13 @@ public class BankUser {
         this.logged = false;
     }
     
+    //create a bank account (used for bank users only, not social list users)
     public void createBankAccount(int accountNumber, int pin){
         account = new BankAccount(0, accountNumber);
         account.setCardPin(pin);
     }
 
+    //setters
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -71,6 +76,7 @@ public class BankUser {
         this.address = address;
     }
 
+    //getters
     public BankAccount getBankAccount() {
         return account;
     }
@@ -103,18 +109,22 @@ public class BankUser {
         return address;
     }
     
+    //method to find the user based on his email
     public boolean checkUserName(String email){
         return this.email.equals(email);
     }
     
+    //method to validate password
     public boolean validatePassword(String password){
         return this.password.equals(password);
     }
     
+    //method to check if the user is logged
     public boolean isLogged() {
     	return logged;
     }
     
+    //login method with email and password
     public boolean login(String email, String password) {
     	if(checkUserName(email)&&validatePassword(password)){
     		logged = true;
@@ -122,6 +132,7 @@ public class BankUser {
     	} else return false;
     }
     
+    //logout method
     public void logout() {
     	logged = false;
     }

@@ -16,6 +16,9 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
+ * <pre>
+ *Service for Bankify pay
+ * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.15.0)",
@@ -179,6 +182,9 @@ public final class BankPayGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify pay
+   * </pre>
    */
   public static abstract class BankPayImplBase implements io.grpc.BindableService {
 
@@ -245,6 +251,9 @@ public final class BankPayGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify pay
+   * </pre>
    */
   public static final class BankPayStub extends io.grpc.stub.AbstractStub<BankPayStub> {
     private BankPayStub(io.grpc.Channel channel) {
@@ -296,6 +305,9 @@ public final class BankPayGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify pay
+   * </pre>
    */
   public static final class BankPayBlockingStub extends io.grpc.stub.AbstractStub<BankPayBlockingStub> {
     private BankPayBlockingStub(io.grpc.Channel channel) {
@@ -336,6 +348,9 @@ public final class BankPayGrpc {
   }
 
   /**
+   * <pre>
+   *Service for Bankify pay
+   * </pre>
    */
   public static final class BankPayFutureStub extends io.grpc.stub.AbstractStub<BankPayFutureStub> {
     private BankPayFutureStub(io.grpc.Channel channel) {

@@ -19,11 +19,15 @@ import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
 
 /**
- *
- * @author Camila Chapetzan Antunes
- */
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyTransactionsGUIActions
+* - client-side GUI implementation of gRPC service BankifyTransactions
+* - Frame that manage all account transactions via gRPC
+*/
 public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 	
+	//variables for gRPC and jmDNS
 	private static ServiceInfo bankServiceInfo;
 	
 	private static BankTransactionsBlockingStub blockingStub;
@@ -38,6 +42,7 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 
     /**
      * Creates new form BankifySocialGUIClient
+     * special constructor for receiving data from BankifyTransactionsGUIClient
      */
     public BankifyTransactionsGUIActions(String firstName, String email, int accNumber, BankifyTransactionsGUIClient parent, Logger logger2, ManagedChannel channel, BankTransactionsBlockingStub blockingStub2, BankTransactionsStub asyncStub2, ServiceInfo bankServiceInfo) {
     	this.logger2 = logger2;
@@ -45,7 +50,7 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
     	this.blockingStub = blockingStub2;
     	this.asyncStub = asyncStub2;
     	this.bankServiceInfo = bankServiceInfo;
-    	this.parent = parent;
+    	this.parent = parent; //parent frame for returning if needed
     	this.firstName = firstName;
     	this.email = email;
     	this.accNumber = accNumber;
@@ -97,15 +102,22 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         
+        /*
+         * window closing action listener: call userLogout gRPC method
+         * - if successfull returns to BankifyTransactionsGUIClient frame
+         */
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
             	
+            	//gRPC userLogout method
 				LogoutData request = LogoutData.newBuilder().setEmail(email).build(); 
    	    	 	BankReply response = blockingStub.userLogout(request);
    	    	 	logger2.info("Logout Status: " + response.getMessage());
+   	    	 	//returning to previous screen
             	BankifyTransactionsGUIActions.this.setVisible(false);
             	parent.setVisible(true);
+            	//JFrame dispose
             	BankifyTransactionsGUIActions.this.dispose();
             }
         });
@@ -171,12 +183,13 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 
         jLabel7.setText("What woukd you like to do, "+firstName+"?");
 
-        buttonGroup1.add(jRadioButton3);
-        //jRadioButton3.setSelected(true);
+        buttonGroup1.add(jRadioButton3); //Radio button for action choose
         jRadioButton3.setText("Check Balance");
+        /*
+         * Check Balance action listener: set necessary fields visible for method
+         */
         jRadioButton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jLabel4.setText("Pin:");
 		        jLabel4.setVisible(true);
 		        jPasswordField1.setVisible(true);
 		        jLabel6.setVisible(false);
@@ -192,9 +205,11 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton4);
         jRadioButton4.setText("Account Movement");
+        /*
+         * Account Movement action listener: set necessary fields visible for method
+         */
         jRadioButton4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jLabel4.setText("Password:");
 		        jLabel4.setVisible(true);
 		        jPasswordField1.setVisible(true);
 		        jLabel6.setVisible(false);
@@ -210,9 +225,11 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton5);
         jRadioButton5.setText("Transfer to another Bankify account");
+        /*
+         * Transfer to another Bankify account action listener: set necessary fields visible for method
+         */
         jRadioButton5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jLabel4.setText("Pin:");
 		        jLabel4.setVisible(true);
 		        jPasswordField1.setVisible(true);
 		        jLabel6.setVisible(true);
@@ -230,7 +247,7 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
         jTextField1.setText(String.valueOf(accNumber));
         jTextField1.setEditable(false);
 
-        jLabel4.setText("Pin/Password:");
+        jLabel4.setText("Pin:");
         jLabel4.setVisible(false);
         jPasswordField1.setVisible(false);
 
@@ -253,6 +270,9 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
         jButton2.setVisible(false);
 
         jButton1.setText("Reset");
+        /*
+         * Reset button action: clear all fields
+         */
         jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jPasswordField1.setText("");
@@ -262,41 +282,58 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 		});
 
         jButton2.setText("Send");
+        /*
+         * Send button action: Validate all the fields and call gRPC method according to the selected RadioButton
+         * - if successfull shows result on the correct fields
+         */
         jButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(jRadioButton3.isSelected()) { // get balance
-	    				if(!String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) {
+					if(jRadioButton3.isSelected()) { // get balance is selected
+						//validate fields
+	    				if(!String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) { //non valid pin
 	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Pin must be a 4 digit number");
 	    				} else {
+	    					//gRPC method getBalance
 	    					pin = Integer.valueOf(String.valueOf(jPasswordField1.getPassword()));
 	    					AccountData request = AccountData.newBuilder().setAccountNumber(accNumber).setPin(pin).build();
 	    					FloatReply response = blockingStub.getBalance(request);
-	    					if(response.getBalance() == -1) {
+	    					if(response.getBalance() == -1) { //MessageDialog error
 	    		    		 javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, response.getMessage());
-	    		    	 	} else {
+	    		    	 	} else { //if successfull, shows balance on screen
 	    		    		 	jLabel9.setText("Balance: \u20ac"+response.getBalance());
 	    		    		 	javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, response.getMessage()+" "+response.getBalance());
 	    		    		}
 	    				}
 	    			}
-	    			if(jRadioButton4.isSelected()) { // account movement
-	    				password = String.valueOf(jPasswordField1.getPassword());
-	    				if (password.equals("")) {
-	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Password cannot be blank");
+	    			if(jRadioButton4.isSelected()) { // account movement is selected
+	    				//validate fields
+	    				if (!String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) {
+	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Pin must be a 4 digit number");
 	    				} else {
-	    					password = String.valueOf(jPasswordField1.getPassword());
-	    					LoginData request = LoginData.newBuilder().setEmail(email).setPassword(password).build();
+	    					//gRPC method accountMovement
+	    					pin = Integer.valueOf(String.valueOf(jPasswordField1.getPassword()));
+	    					AccountData request = AccountData.newBuilder().setAccountNumber(accNumber).setPin(pin).build();
 	    					Iterator<MovementData> responseMov = blockingStub.accountMovement(request);
-	    					String temp = "";
-	    					while(responseMov.hasNext()) {
-	    						temp += responseMov.next().getMovement() + "\n";
+	    					if(responseMov.hasNext()) { //has an answer
+	    						String temp = responseMov.next().getMovement();
+	    						if(temp.equals("Bank User not found")||temp.equals("User not logged in ")||temp.equals("Invalid pin")) //MessageDialog error
+	    							javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, temp);
+	    						else { //if successfull, shows movement on screen TextArea
+	    							temp+="\n";
+	    							while(responseMov.hasNext()) {
+	    								temp += responseMov.next().getMovement() + "\n";
+	    							}
+	    							jTextArea1.setText(temp);
+	    						}
+	    					} else {
+	    						javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Invalid pi");
 	    					}
-	    					jTextArea1.setText(temp);
 	    				}
 		    		
 	    			}
-	    			if(jRadioButton5.isSelected()) { // transfer to other account
+	    			if(jRadioButton5.isSelected()) { // transfer to other account is selected
+	    				//validate fields
 	    				if(!String.valueOf(jPasswordField1.getPassword()).matches("[0-9]{4}")) {
 	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Pin must be a 4 digit number");
 	    					return;
@@ -305,23 +342,25 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
 	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Destination account must be a 6 digit number");
 	    					return;
 	    				}
-	    				if(!jTextField4.getText().matches("[0-9]{1,}.[0-9]*")) {
-	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Value must be a number");
+	    				if(!jTextField4.getText().matches("[0-9]+")) {
+	    					javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, "Value must be an exact number");
 	    					return;
 	    				}
+	    				//gRPC method transferBalance
     					pin = Integer.valueOf(String.valueOf(jPasswordField1.getPassword()));
     					int toAccNumber = Integer.valueOf(jTextField3.getText());
     					float value = Float.valueOf(jTextField4.getText());
     					AccountTransfer request = AccountTransfer.newBuilder().setAccountNumber(accNumber).setPin(pin).setToAccountNumber(toAccNumber).setValue(value).build();
     		    		FloatReply response = blockingStub.transferBalance(request);
-    		    		if(response.getBalance() == -1) {
+    		    		if(response.getBalance() == -1) { //MessageDialog error
     		    			javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, response.getMessage());
-    		    		} else {
+    		    		} else { //if successfull, shows balance on screen
     		    			jLabel9.setText("Balance: \u20ac"+response.getBalance());
     		    			javax.swing.JOptionPane.showMessageDialog(BankifyTransactionsGUIActions.this, response.getMessage()+" "+response.getBalance());
     		    		}
     		    	
 	    			}
+	    			//reset fields
 	    			jPasswordField1.setText("");
 	    			jTextField3.setText("");
 					jTextField4.setText("");
@@ -340,14 +379,21 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
         jLabel9.setText("Balance:");
 
         jButton3.setText("Logout");
+        /*
+         * Logout button listener: call userLogout gRPC method
+         * - if successfull returns to BankifyTransactionsGUIClient frame
+         */
         jButton3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//gRPC userLogout method
 				LogoutData request = LogoutData.newBuilder().setEmail(email).build(); 
    	    	 	BankReply response = blockingStub.userLogout(request);
    	    	 	logger2.info("Logout Status: " + response.getMessage());
+   	    	 	//returning to previous screen
             	BankifyTransactionsGUIActions.this.setVisible(false);
             	parent.setVisible(true);
-            	BankifyTransactionsGUIActions.this.dispose();    		
+            	//JFrame dispose
+            	BankifyTransactionsGUIActions.this.dispose(); 		
 			}
 		});
 
@@ -495,6 +541,7 @@ public class BankifyTransactionsGUIActions extends javax.swing.JFrame {
         });
     }
 
+    //BankifyTransactions data
     private static String firstName;
     private static String email;
     private static int accNumber;

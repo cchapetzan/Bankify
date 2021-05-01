@@ -4,30 +4,36 @@ option java_multiple_files = true;
 option java_package = "grpc.bank.bankify";
 option java_outer_classname = "BankifyPayImpl";
 
+//Camila Chapetzan Antunes
 package bankify;
 
+//Service for Bankify pay
 service BankPay {
-  rpc HolderLogin (LoginData) returns (LoginPayReply) {}
-  rpc UserLogout (LogoutData) returns (BankReply) {}
-  rpc Pay (PayRequest) returns (PayReply) {}
-  rpc PayHistoryRegister (stream PayHistory) returns (BankReply) {}
+  rpc HolderLogin (LoginData) returns (LoginPayReply) {} //holder login
+  rpc UserLogout (LogoutData) returns (BankReply) {} //holder logout
+  rpc Pay (PayRequest) returns (PayReply) {} //Receive a payment from an card
+  rpc PayHistoryRegister (stream PayHistory) returns (BankReply) {} //transfer history for bank general payment history
 }
 
+// Email and Password for login
 message LoginData {
   string email = 1;
   string password = 2;
 }
 
+// Login reply with user first name and account number
 message LoginPayReply {
   string LoginMessage = 1;
   string FirstName = 2;
   int32 accountNumber = 3;
 }
 
+// E-mail for logout
 message LogoutData{
   string email = 1;
 }
 
+// card number, pin, holder account and value for Pay
 message PayRequest {
   string cardNumber = 1;
   int32 pin = 2;
@@ -35,6 +41,7 @@ message PayRequest {
   float value = 4;
 }
 
+//Pay history fields for PayHistoryRegister
 message PayHistory {
   string cardNumber = 1;
   int32 holderAcc = 2;
@@ -42,6 +49,7 @@ message PayHistory {
   string date = 4;
 }
 
+//Message from payment with data for registry
 message PayReply{
   string details = 1;
   string name = 2;
@@ -49,6 +57,7 @@ message PayReply{
   string date = 4;
 }
 
+// basic Bank answer message
 message BankReply {
   string message = 1;
 }

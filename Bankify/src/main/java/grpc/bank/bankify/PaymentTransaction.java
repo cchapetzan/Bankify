@@ -1,11 +1,19 @@
 package grpc.bank.bankify;
 
+
+/**
+*
+* @author Camila Chapetzan Antunes
+* Class PaymentTransaction
+* - object with all the data for a PaymentTransaction
+*/
 public class PaymentTransaction {
 	private String cardPay;
 	private int toAccount;
 	private String date;
 	private float value;
 	
+	//constructor
 	public PaymentTransaction(String cardPay, int toAccount, String date, float value) {
 		super();
 		this.cardPay = cardPay;
@@ -14,6 +22,7 @@ public class PaymentTransaction {
 		this.value = value;
 	}
 
+	//getters
 	public String getCardPay() {
 		return cardPay;
 	}

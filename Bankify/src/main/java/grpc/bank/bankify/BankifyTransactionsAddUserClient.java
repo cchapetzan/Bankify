@@ -17,9 +17,15 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
+/**
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyTransactionsAddUserClient
+* - client-side implementation/test of gRPC service BankifyTransactions
+*/
 public class BankifyTransactionsAddUserClient {
 	
-	private static ServiceInfo bankServiceInfo;
+	private static ServiceInfo bankServiceInfo; //jmdns service info
 
 	private static final Logger logger = Logger.getLogger(BankifyTransactionsAddUserClient.class.getName());
 
@@ -28,12 +34,13 @@ public class BankifyTransactionsAddUserClient {
 		//String host = "localhost";
 		//int port = 50051;
 		
+		//jmDNS discovery
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
 		String host;
 		int port; 
-		try {
+		try { //server found
 			host = bankServiceInfo.getHostAddresses()[0];
 			port = bankServiceInfo.getPort();
 		} catch (NullPointerException e){
@@ -43,17 +50,19 @@ public class BankifyTransactionsAddUserClient {
 		
 		System.out.println(host+" "+port);
 
+		//channel creating for service
 		ManagedChannel channel = ManagedChannelBuilder.
 				forAddress(host, port)
 				.usePlaintext()
 				.build();
 
+		//gRPC service connection
 		BankTransactionsBlockingStub  blockingStub = BankTransactionsGrpc.newBlockingStub(channel);
 
 		BankifyTransactionsAddUserClient client = new BankifyTransactionsAddUserClient();
-
+		
+		//Service test: addSocialUser
 	    try {
-	    	 //String name = "Adding User: ";
 	    	 String firstName = "Britney";
 	    	 String lastName = "Spears";
 	    	 String id = "US123";
@@ -63,7 +72,8 @@ public class BankifyTransactionsAddUserClient {
 	    	 int pin = 2799;
 	    	 String phone = "083-1234567";
 	    	 String address = "Dublin street";
-	    	 //BankRequest request = BankRequest.newBuilder().setName(name).build();
+
+	    	//gRPC method
 	    	 NewUserData request = NewUserData.newBuilder().setFirstName(firstName).setLastName(lastName).setId(id).setGender(gender).setEmail(email).setPassword(password).setPin(pin).setPhone(phone).setAddress(address).build();
 
 	    	 BankReply response = blockingStub.addUser(request);
@@ -81,6 +91,8 @@ public class BankifyTransactionsAddUserClient {
 	    }
 	  }
 
+	//method discoverBankifyService
+	//this method uses jmDNS to find service host and port
 	private static void discoverBankifyService(String service_type) {
 		
 		
@@ -89,13 +101,13 @@ public class BankifyTransactionsAddUserClient {
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 
 				
-			jmdns.addServiceListener(service_type, new ServiceListener() {
+			jmdns.addServiceListener(service_type, new ServiceListener() { //ServiceListener implementation
 				
 				@Override
 				public void serviceResolved(ServiceEvent event) {
 					System.out.println("Bankify Service resolved: " + event.getInfo());
 
-					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_transactions");
+					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_transactions"); //find service info
 
 					int port = bankServiceInfo.getPort();
 					

@@ -22,9 +22,15 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 
+/**
+*
+* @author Camila Chapetzan Antunes
+* Class BankifyPayClient
+* - client-side implementation/test of gRPC service BankifyPay
+*/
 public class BankifyPayClient {
 	
-	private static ServiceInfo bankServiceInfo;
+	private static ServiceInfo bankServiceInfo; //jmdns service info
 
 	private static final Logger logger = Logger.getLogger(BankifyPayClient.class.getName());
 	
@@ -35,12 +41,13 @@ public class BankifyPayClient {
 		//String host = "localhost";
 		//int port = 50053;
 
+		//jmDNS discovery
 		String bankify_service_type = "_bankify._tcp.local.";
 		discoverBankifyService(bankify_service_type);
 		
 		String host;
 		int port; 
-		try {
+		try { //server found
 			host = bankServiceInfo.getHostAddresses()[0];
 			port = bankServiceInfo.getPort();
 		} catch (NullPointerException e){
@@ -50,24 +57,28 @@ public class BankifyPayClient {
 		
 		System.out.println(host+" "+port);
 		
+		//channel creating for service
 		ManagedChannel channel = ManagedChannelBuilder.
 				forAddress(host, port)
 				.usePlaintext()
 				.build();
 
+		//gRPC service connection
 		BankPayBlockingStub  blockingStub = BankPayGrpc.newBlockingStub(channel);
 		
-		BankPayStub asyncStub = BankPayGrpc.newStub(channel);;
+		BankPayStub asyncStub = BankPayGrpc.newStub(channel); //asyncStub for Client Stream
 
 		BankifyPayClient client = new BankifyPayClient();
 
 	    try {
 	    	 String email = "mister@business.ie";
-	    	 String password = "1234";
+	    	 String password = "abcdefgh";
 	    	 String card = "4321-2345";
 	    	 int pin = 1234;
 	    	 int holderAcc;
 	    	 float value = 130;
+	    	 
+	    	//Service test: holderLogin
 	    	 LoginData request = LoginData.newBuilder().setEmail(email).setPassword(password).build();
 
 	    	 LoginPayReply response = blockingStub.holderLogin(request);
@@ -76,6 +87,7 @@ public class BankifyPayClient {
 	    	 
 	    	 holderAcc = response.getAccountNumber();
 	    	 
+	    	//Service test: pay
 	    	 PayRequest request2 = PayRequest.newBuilder().setCardNumber(card).setPin(pin).setHolderAcc(holderAcc).setValue(value).build();
 	    	 
 	    	 PayReply response2 = blockingStub.pay(request2);
@@ -88,6 +100,7 @@ public class BankifyPayClient {
 	    		 
 	    	 }
 	    	 
+	    	//Service test: pay
 	    	 PayRequest request2a = PayRequest.newBuilder().setCardNumber(card).setPin(pin).setHolderAcc(holderAcc).setValue(value+30).build();
 	    	 
 	    	 PayReply response2a = blockingStub.pay(request2a);
@@ -100,8 +113,9 @@ public class BankifyPayClient {
 	    		 
 	    	 }
 	    	 
+	    	//Service test: payHistoryRegister (via payTrans method)
 	    	 ArrayList<String> resp = payTrans(paymentHistory, asyncStub);
- 			 Thread.sleep(6000);
+ 			 Thread.sleep(6000); //thread sleep to wait for the asyncStub to get all the streaming
 	    	
 			 logger.info(resp.get(0).toString());
 	    	 
@@ -110,6 +124,8 @@ public class BankifyPayClient {
 	    	 BankReply response3 = blockingStub.userLogout(request3);
 	    	 
 	    	 logger.info("Logout Status: " + response3.getMessage());
+	    	 
+	    	//shutdown channel
 	    	 channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 
 	    } catch (StatusRuntimeException e) {
@@ -123,6 +139,8 @@ public class BankifyPayClient {
 		} 
 	}
 
+	//method discoverBankifyService
+	//this method uses jmDNS to find service host and port
 	private static void discoverBankifyService(String service_type) {
 		
 		
@@ -131,13 +149,13 @@ public class BankifyPayClient {
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 
 				
-			jmdns.addServiceListener(service_type, new ServiceListener() {
+			jmdns.addServiceListener(service_type, new ServiceListener() { //ServiceListener implementation
 				
 				@Override
 				public void serviceResolved(ServiceEvent event) {
 					System.out.println("Bankify Service resolved: " + event.getInfo());
 
-					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_pay");
+					bankServiceInfo = jmdns.getServiceInfo(service_type, "bankify_pay"); //find service info
 
 					int port = bankServiceInfo.getPort();
 					
@@ -183,11 +201,17 @@ public class BankifyPayClient {
 		
 	}
 	
+	//method payTrans
+	//this method calls gRPC method payHistoryRegister to transfer via stream all payment history.
     private static ArrayList<String> payTrans(ArrayList<PaymentTransaction> list, BankPayStub asyncStub) throws InterruptedException, RuntimeException {
-    	ArrayList<String> resp = new ArrayList<>();
-    	final CountDownLatch finishLatch = new CountDownLatch(1);
+    	ArrayList<String> resp = new ArrayList<>(); //String saved in an array for easy implementation
+    	
+    	//A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.
+    	final CountDownLatch finishLatch = new CountDownLatch(1);  
+    	
+    	//gRPC payHistoryRegister called
     	StreamObserver<PayHistory> requestObserver = asyncStub.withDeadlineAfter(5, TimeUnit.SECONDS)
-    			.payHistoryRegister(new StreamObserver<BankReply>() {
+    			.payHistoryRegister(new StreamObserver<BankReply>() { //streamObserver implementation
     		@Override
             public void onNext(BankReply response) {
     			resp.add(response.getMessage());
@@ -204,7 +228,7 @@ public class BankifyPayClient {
             }
     	});
     	
-    	try {
+    	try { //transfering all transactions for requestObserver
     		for (int i = 0; i < list.size(); i++) {
     			PaymentTransaction temp = list.get(i);
     			PayHistory req = PayHistory.newBuilder().setCardNumber(temp.getCardPay()).setHolderAcc(temp.getToAccount()).setDate(temp.getDate()).setValue(temp.getValue()).build();

@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * E-mail for logout
+ * </pre>
+ *
  * Protobuf type {@code bankify.LogoutData}
  */
 public  final class LogoutData extends
@@ -271,6 +275,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * E-mail for logout
+   * </pre>
+   *
    * Protobuf type {@code bankify.LogoutData}
    */
   public static final class Builder extends

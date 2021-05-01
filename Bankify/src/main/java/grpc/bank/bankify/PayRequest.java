@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * card number, pin, holder account and value for Pay
+ * </pre>
+ *
  * Protobuf type {@code bankify.PayRequest}
  */
 public  final class PayRequest extends
@@ -352,6 +356,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * card number, pin, holder account and value for Pay
+   * </pre>
+   *
    * Protobuf type {@code bankify.PayRequest}
    */
   public static final class Builder extends

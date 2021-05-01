@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * Email and Password for login
+ * </pre>
+ *
  * Protobuf type {@code bankify.LoginData}
  */
 public  final class LoginData extends
@@ -322,6 +326,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Email and Password for login
+   * </pre>
+   *
    * Protobuf type {@code bankify.LoginData}
    */
   public static final class Builder extends

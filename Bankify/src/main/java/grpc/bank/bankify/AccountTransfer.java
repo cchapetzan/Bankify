@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ * Account, pin, Destination account and value for TransferBalance
+ * </pre>
+ *
  * Protobuf type {@code bankify.AccountTransfer}
  */
 public  final class AccountTransfer extends
@@ -327,6 +331,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Account, pin, Destination account and value for TransferBalance
+   * </pre>
+   *
    * Protobuf type {@code bankify.AccountTransfer}
    */
   public static final class Builder extends

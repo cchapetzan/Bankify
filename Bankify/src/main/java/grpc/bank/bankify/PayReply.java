@@ -4,6 +4,10 @@
 package grpc.bank.bankify;
 
 /**
+ * <pre>
+ *Message from payment with data for registry
+ * </pre>
+ *
  * Protobuf type {@code bankify.PayReply}
  */
 public  final class PayReply extends
@@ -402,6 +406,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   *Message from payment with data for registry
+   * </pre>
+   *
    * Protobuf type {@code bankify.PayReply}
    */
   public static final class Builder extends
